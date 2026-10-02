@@ -1,0 +1,321 @@
+#!/usr/bin/env bash
+#
+# rdfeed: the RemoteApps of your company in the Linux app menu
+#
+# Companies publish their Windows apps (Word, Excel, their own tools) as an RD
+# Web Access feed. Windows subscribes to it under "RemoteApp and Desktop
+# Connections" and puts the apps in the start menu. rdfeed does the same on
+# Linux: each app gets an entry in the app menu and opens as a window of its
+# own, through FreeRDP.
+#
+# This is the front end: the menu and the commands. Signing in to the feed and
+# downloading the apps is rdfeed-fetch's job, and rdfeed-hook.so goes into
+# FreeRDP to work around two of its problems (see launch.sh).
+#
+# Copyright (C) 2026 Felitendo
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+set -uo pipefail
+
+RF_SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+RF_LIBDIR="${RF_LIBDIR:-@LIBDIR@}"
+
+for _mod in common config workspace launch menu; do
+	# shellcheck source=/dev/null
+	if ! source "$RF_LIBDIR/$_mod.sh"; then
+		printf 'rdfeed: cannot load %s/%s.sh\n' "$RF_LIBDIR" "$_mod" >&2
+		exit 14
+	fi
+done
+unset _mod
+
+# ---------------------------------------------------------------------------
+# Commands
+# ---------------------------------------------------------------------------
+
+# rf_prompt <question> [default]
+# A line typed in, in RF_ANSWER. Without a terminal it is read from stdin, so
+# scripts can pipe the answers in.
+RF_ANSWER=''
+
+rf_prompt() {
+	RF_ANSWER=''
+	if [[ -t 0 ]]; then
+		IFS= read -rep "  $1 " -i "${2:-}" RF_ANSWER || return 1
+	else
+		IFS= read -r RF_ANSWER || return 1
+	fi
+	return 0
+}
+
+# rf_prompt_password <question>
+rf_prompt_password() {
+	RF_ANSWER=''
+	if [[ -t 0 ]]; then
+		IFS= read -rsp "  $1 " RF_ANSWER || return 1
+		printf '\n'
+	else
+		IFS= read -r RF_ANSWER || return 1
+	fi
+	[[ -n $RF_ANSWER ]]
+}
+
+# rf_signin <id or ""> <url> <user as typed> <password>
+# Signs in, downloads the apps and puts them in the app menu. With an empty
+# id a new workspace is made, or the one that already has this address.
+rf_signin() {
+	local id="$1" url="$2" typed="$3" password="$4" stage old_account first=0 domain
+
+	[[ -n $id ]] || id="$(rf_ws_id_for "$url")"
+	rf_ws_ids
+	(( ${#RF_WS_IDS[@]} == 0 )) && first=1
+	old_account=''
+	if [[ -e $(rf_ws_file "$id") ]]; then
+		rf_ws_load "$id"
+		old_account="$WS_ACCOUNT"
+	fi
+
+	rf_split_user "$typed"
+	stage="$(rf_stage_dir)" || { rf_bad "$(rf_msg "Could not write to %s." "$RF_DATADIR")"; return 1; }
+
+	local host="${url#*://}"
+	rf_say "  $(rf_msg "Signing in to %s…" "${host%%/*}")"
+	if ! rf_fetch "$url" "$RF_USER" "$RF_DOMAIN" "$stage" "$password"; then
+		rm -rf "$stage"
+		rf_bad "$RF_FETCH_ERROR"
+		return 1
+	fi
+
+	domain="$RF_DOMAIN"
+	[[ $domain == - ]] && domain="$RF_FETCH_DOMAIN"
+	rf_ws_set "$id" Url "$url"
+	rf_ws_set "$id" Name "$RF_FETCH_NAME"
+	rf_ws_set "$id" User "$RF_USER"
+	rf_ws_set "$id" Domain "$domain"
+	rf_ws_set "$id" Refreshed "$(date +%s)"
+	rf_ws_load "$id"
+
+	[[ -n $old_account && $old_account != "$WS_ACCOUNT" ]] && rf_secret_clear "$id"
+	if ! rf_secret_set "$id" "$WS_ACCOUNT" "$WS_NAME" "$password"; then
+		rf_note "$(rf_msg "The password could not be saved in the keyring, so each app asks for it.")"
+	fi
+
+	rf_ws_install "$id" "$stage" || { rf_bad "$(rf_msg "Could not write to %s." "$RF_DATADIR")"; return 1; }
+
+	# New apps should show up by themselves, as on Windows.
+	if (( first )) && [[ $(rf_config_get AutoRefresh yes) == yes ]]; then
+		rf_timer_set yes || true
+	fi
+
+	if (( RF_FETCH_COUNT == 1 )); then
+		rf_ok "$(rf_msg "1 app from %s is now in your app menu." "$WS_NAME")"
+	else
+		rf_ok "$(rf_msg "%d apps from %s are now in your app menu." "$RF_FETCH_COUNT" "$WS_NAME")"
+	fi
+}
+
+rf_do_add() {
+	local input='' user='' url rc
+
+	while (( $# )); do
+		case "$1" in
+			--user) user="${2:-}"; shift ;;
+			*) input="$1" ;;
+		esac
+		shift
+	done
+
+	if [[ -z $input ]]; then
+		rf_say "  $(rf_msg "Your IT department has the address. A work e-mail address often works too.")"
+		rf_prompt "$(rf_msg "Feed address, server or e-mail:")" || return 1
+		input="$RF_ANSWER"
+	fi
+	rf_feed_url "$input"
+	rc=$?
+	case "$rc" in
+		1) return 1 ;;
+		2) rf_bad "$(rf_msg "No feed is registered for %s. Ask your IT department for the address." "$input")"; return 1 ;;
+	esac
+	url="$RF_URL"
+
+	if [[ -z $user ]]; then
+		rf_prompt "$(rf_msg "User name (DOMAIN\\name or name@domain):")" || return 1
+		user="$RF_ANSWER"
+	fi
+	[[ -n $user ]] || return 1
+	rf_prompt_password "$(rf_msg "Password:")" || return 1
+
+	rf_signin '' "$url" "$user" "$RF_ANSWER"
+}
+
+# rf_do_signin_again <id>
+# Another password or another user for a workspace.
+rf_do_signin_again() {
+	local id="$1"
+	rf_ws_load "$id"
+	rf_prompt "$(rf_msg "User name (DOMAIN\\name or name@domain):")" "$WS_ACCOUNT" || return 1
+	[[ -n $RF_ANSWER ]] || return 1
+	local user="$RF_ANSWER"
+	rf_prompt_password "$(rf_msg "Password:")" || return 1
+	rf_signin "$id" "$WS_URL" "$user" "$RF_ANSWER"
+}
+
+# rf_do_refresh [id] [--quiet]
+# The quiet one is the daily timer's: no questions, and a notification only
+# when somebody has to do something.
+rf_do_refresh() {
+	local quiet='' only='' id password stage rc failed=0
+	while (( $# )); do
+		case "$1" in
+			--quiet) quiet=1 ;;
+			*) only="$1" ;;
+		esac
+		shift
+	done
+
+	rf_ws_ids
+	if (( ${#RF_WS_IDS[@]} == 0 )); then
+		[[ -z $quiet ]] && rf_note "$(rf_msg "No workspace yet. Add one with \`%s add\`." "$RF_NAME")"
+		return 0
+	fi
+	for id in "${RF_WS_IDS[@]}"; do
+		[[ -n $only && $id != "$only" ]] && continue
+		rf_ws_load "$id"
+		password="$(rf_secret_get "$id" "$WS_ACCOUNT")" || password=''
+		if [[ -z $password ]]; then
+			if [[ -n $quiet || ! -t 0 ]]; then
+				[[ -n $quiet ]] && rf_notify "$WS_NAME" "$(rf_msg "No password saved for %s. Sign in again in rdfeed." "$WS_NAME")" dialog-warning
+				failed=1
+				continue
+			fi
+			rf_prompt_password "$(rf_msg "Password for %s:" "$WS_ACCOUNT")" || { failed=1; continue; }
+			password="$RF_ANSWER"
+		fi
+
+		[[ -z $quiet ]] && rf_say "  $(rf_msg "Refreshing %s…" "$WS_NAME")"
+		stage="$(rf_stage_dir)" || return 1
+		rf_fetch "$WS_URL" "$WS_USER" "${WS_DOMAIN:-}" "$stage" "$password" "$quiet"
+		rc=$?
+		if (( rc != 0 )); then
+			rm -rf "$stage"
+			failed=1
+			if [[ -n $quiet ]]; then
+				# A server that is not reachable now will be tomorrow. A
+				# password that no longer works needs the user.
+				(( rc == 10 )) && rf_notify "$WS_NAME" "$(rf_msg "The password no longer works. Sign in again in rdfeed.")" dialog-warning
+			else
+				rf_bad "$RF_FETCH_ERROR"
+			fi
+			continue
+		fi
+		[[ -n $RF_FETCH_NAME ]] && rf_ws_set "$id" Name "$RF_FETCH_NAME"
+		rf_ws_set "$id" Refreshed "$(date +%s)"
+		rf_ws_install "$id" "$stage" || { failed=1; continue; }
+		[[ -z $quiet ]] && rf_ok "$(rf_msg "%s: %d apps" "$WS_NAME" "$RF_FETCH_COUNT")"
+	done
+	return "$failed"
+}
+
+rf_do_remove() {
+	local id="${1:-}"
+	if [[ -z $id || ! -e $(rf_ws_file "$id") ]]; then
+		rf_bad "$(rf_msg "Which workspace? See \`%s list\` for the names." "$RF_NAME")"
+		return 1
+	fi
+	rf_ws_load "$id"
+	rf_ws_purge "$id"
+	rf_ws_ids
+	(( ${#RF_WS_IDS[@]} == 0 )) && { rf_timer_set no || true; }
+	rf_ok "$(rf_msg "%s and its apps are removed." "$WS_NAME")"
+}
+
+rf_do_list() {
+	local id i
+	rf_ws_ids
+	if (( ${#RF_WS_IDS[@]} == 0 )); then
+		rf_note "$(rf_msg "No workspace yet. Add one with \`%s add\`." "$RF_NAME")"
+		return 0
+	fi
+	for id in "${RF_WS_IDS[@]}"; do
+		rf_ws_load "$id"
+		rf_ws_apps_load "$id"
+		printf '%s%s%s  %s(%s, %s)%s\n' "$RF_C_BOLD" "$WS_NAME" "$RF_C_RESET" "$RF_C_DIM" "$id" "$WS_ACCOUNT" "$RF_C_RESET"
+		for i in "${!RF_APP_SLUGS[@]}"; do
+			printf '  %-36s %s\n' "$id/${RF_APP_SLUGS[i]}" "${RF_APP_TITLES[i]}"
+		done
+	done
+}
+
+# rf_do_run <app or workspace/app> [file]
+rf_do_run() {
+	local spec="${1:-}" file="${2:-}" id slug found=() i
+	if [[ -z $spec ]]; then
+		rf_bad "$(rf_msg "Which app? See \`%s list\`." "$RF_NAME")"
+		return 1
+	fi
+	if [[ $spec == */* ]]; then
+		rf_launch "${spec%%/*}" "${spec#*/}" "$file"
+		return
+	fi
+	rf_ws_ids
+	for id in "${RF_WS_IDS[@]}"; do
+		rf_ws_apps_load "$id"
+		for i in "${!RF_APP_SLUGS[@]}"; do
+			[[ ${RF_APP_SLUGS[i]} == "$spec" ]] && found+=("$id")
+		done
+	done
+	case "${#found[@]}" in
+		0) rf_bad "$(rf_msg "There is no app %s. See \`%s list\`." "$spec" "$RF_NAME")"; return 1 ;;
+		1) slug="$spec"; rf_launch "${found[0]}" "$slug" "$file" ;;
+		*) rf_bad "$(rf_msg "Several workspaces have %s. Write it as WORKSPACE/APP, see \`%s list\`." "$spec" "$RF_NAME")"; return 1 ;;
+	esac
+}
+
+rf_do_help() {
+	cat <<- EOF
+	$RF_PRETTY $RF_VERSION
+
+	$(rf_msg "Usage: rdfeed [command]")
+
+	$(rf_msg "Commands:")
+	  add [ADDRESS]       $(rf_msg "Add the workspace of your company")
+	  refresh [NAME]      $(rf_msg "Load the apps again")
+	  list                $(rf_msg "List the workspaces and their apps")
+	  run APP [FILE]      $(rf_msg "Start an app, or open a file with it")
+	  remove NAME         $(rf_msg "Remove a workspace and its apps")
+	  -h, --help          $(rf_msg "Show this help")
+	  -V, --version       $(rf_msg "Show the version")
+
+	$(rf_msg "Without a command an interactive menu is shown.")
+	EOF
+}
+
+# ---------------------------------------------------------------------------
+# Dispatch
+# ---------------------------------------------------------------------------
+
+main() {
+	local cmd="${1:-}"
+	[[ $# -gt 0 ]] && shift
+
+	case "$cmd" in
+		add|subscribe) rf_do_add "$@" ;;
+		refresh|sync)  rf_do_refresh "$@" ;;
+		list|ls)       rf_do_list ;;
+		run|start)     rf_do_run "$@" ;;
+		remove|delete) rf_do_remove "$@" ;;
+
+		-h|--help|help) rf_do_help ;;
+		-V|--version)   printf '%s %s\n' "$RF_NAME" "$RF_VERSION" ;;
+
+		'') rf_ui_menu ;;
+		*)
+			rf_bad "$(rf_msg "Unknown command: %s" "$cmd")"
+			printf '\n'
+			rf_do_help
+			exit 1
+			;;
+	esac
+}
+
+main "$@"

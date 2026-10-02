@@ -1,0 +1,617 @@
+#!/usr/bin/env python3
+#
+# rdfeed-fetch: sign in to an RD Web Access feed and download its apps
+#
+# The feed is the one Windows subscribes to under "RemoteApp and Desktop
+# Connections". Signing in takes NTLM, which curl no longer always has, so it
+# is done here with nothing but the Python standard library.
+#
+#   rdfeed-fetch --url URL --user USER [--domain DOMAIN] --out DIR
+#
+# The password comes on stdin. DIR gets feed.xml, apps.tsv (app, type, title,
+# file types), rdp/<app>.rdp and icons/<app>.png. Progress goes to stdout, one
+# tab-separated line each:
+#
+#   workspace <name>             the name the company gave the feed
+#   domain    <domain>           the Windows domain the server signed us in to
+#   app       <app> <type> <title>
+#   skip      <title> <reason>
+#
+# Exit codes: 0 done, 10 user name or password wrong, 11 server not reached,
+# 12 no feed at that address, 2 bad arguments.
+#
+# Copyright (C) 2026 Felitendo
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+import argparse
+import base64
+import hmac
+import html.parser
+import http.client
+import os
+import re
+import socket
+import ssl
+import struct
+import sys
+import time
+import unicodedata
+import urllib.parse
+import xml.etree.ElementTree as ET
+import zlib
+
+EXIT_AUTH = 10
+EXIT_NETWORK = 11
+EXIT_NOFEED = 12
+
+# WebFeedLogin.aspx hands back a forms ticket in its body, and the Windows
+# client returns it as a cookie. The cookie name is not documented and differs
+# between versions, so it goes out under every name in use. IIS reads its own.
+FEED_AUTH_COOKIES = ("TSWAFeedAuthCookie", ".ASPXAUTH", "TSWAFeedAuth")
+
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+
+# The file types of the usual apps, for feeds that list none. Windows only
+# offers "Open with" for the types the administrator entered, and most never
+# enter any. Matched as whole words against the program, the title and the
+# alias of an app.
+KNOWN_TYPES = [
+    (("winword", "word"), "docx docm doc dotx dotm dot rtf odt"),
+    (("excel",), "xlsx xlsm xlsb xls xltx xltm csv ods"),
+    (("powerpnt", "powerpoint"), "pptx pptm ppt potx potm ppsx pps odp"),
+    (("onenote",), "one"),
+    (("outlook",), "msg"),
+    (("visio",), "vsdx vsd"),
+    (("msaccess", "access"), "accdb mdb"),
+    (("winproj", "project"), "mpp"),
+    (("mspub", "publisher"), "pub"),
+    (("acrobat", "acrord32", "acrord", "pdf24", "foxit"), "pdf"),
+    (("trueview", "dwgviewr", "autocad", "acad"), "dwg dxf"),
+    (("notepad",), "txt log"),
+]
+
+
+class FeedError(Exception):
+    code = EXIT_NOFEED
+
+
+class AuthError(FeedError):
+    code = EXIT_AUTH
+
+
+# ---------------------------------------------------------------- NTLMv2 (MS-NLMP)
+
+def md4(data):
+    """hashlib has no MD4 any more on OpenSSL 3, and NTLM needs it."""
+    def rol(v, s):
+        v &= 0xFFFFFFFF
+        return ((v << s) | (v >> (32 - s))) & 0xFFFFFFFF
+
+    msg = bytearray(data) + b"\x80"
+    while len(msg) % 64 != 56:
+        msg.append(0)
+    msg += struct.pack("<Q", (8 * len(data)) & 0xFFFFFFFFFFFFFFFF)
+    a, b, c, d = 0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476
+    for off in range(0, len(msg), 64):
+        x = struct.unpack("<16I", msg[off:off + 64])
+        aa, bb, cc, dd = a, b, c, d
+        for i in (0, 4, 8, 12):
+            a = rol(a + ((b & c) | (~b & d)) + x[i], 3)
+            d = rol(d + ((a & b) | (~a & c)) + x[i + 1], 7)
+            c = rol(c + ((d & a) | (~d & b)) + x[i + 2], 11)
+            b = rol(b + ((c & d) | (~c & a)) + x[i + 3], 19)
+        for i in (0, 1, 2, 3):
+            a = rol(a + ((b & c) | (b & d) | (c & d)) + x[i] + 0x5A827999, 3)
+            d = rol(d + ((a & b) | (a & c) | (b & c)) + x[i + 4] + 0x5A827999, 5)
+            c = rol(c + ((d & a) | (d & b) | (a & b)) + x[i + 8] + 0x5A827999, 9)
+            b = rol(b + ((c & d) | (c & a) | (d & a)) + x[i + 12] + 0x5A827999, 13)
+        for i in (0, 2, 1, 3):
+            a = rol(a + (b ^ c ^ d) + x[i] + 0x6ED9EBA1, 3)
+            d = rol(d + (a ^ b ^ c) + x[i + 8] + 0x6ED9EBA1, 9)
+            c = rol(c + (d ^ a ^ b) + x[i + 4] + 0x6ED9EBA1, 11)
+            b = rol(b + (c ^ d ^ a) + x[i + 12] + 0x6ED9EBA1, 15)
+        a, b = (a + aa) & 0xFFFFFFFF, (b + bb) & 0xFFFFFFFF
+        c, d = (c + cc) & 0xFFFFFFFF, (d + dd) & 0xFFFFFFFF
+    return struct.pack("<4I", a, b, c, d)
+
+
+# UNICODE | REQUEST_TARGET | NTLM | ALWAYS_SIGN | EXTENDED_SESSIONSECURITY |
+# TARGET_INFO | VERSION | 128 | 56
+NTLM_FLAGS = (0x00000001 | 0x00000004 | 0x00000200 | 0x00008000 | 0x00080000
+              | 0x00800000 | 0x02000000 | 0x20000000 | 0x80000000)
+NTLM_VERSION = bytes([10, 0, 0x61, 0x4A, 0, 0, 0, 15])
+
+
+def ntlm_negotiate():
+    return (b"NTLMSSP\x00" + struct.pack("<II", 1, NTLM_FLAGS | 0x00000002)
+            + struct.pack("<HHI", 0, 0, 40) * 2 + NTLM_VERSION)
+
+
+def ntlm_av_pairs(info):
+    pairs, i = {}, 0
+    while i + 4 <= len(info):
+        av_id, length = struct.unpack("<HH", info[i:i + 4])
+        i += 4
+        if av_id == 0:
+            break
+        pairs[av_id] = info[i:i + length]
+        i += length
+    return pairs
+
+
+def ntowfv2(user, domain, password):
+    return hmac.new(md4(password.encode("utf-16-le")),
+                    (user.upper() + domain).encode("utf-16-le"), "md5").digest()
+
+
+def ntlmv2_response(key, server_challenge, client_challenge, timestamp, target_info):
+    temp = (b"\x01\x01" + b"\x00" * 6 + timestamp + client_challenge + b"\x00" * 4
+            + target_info + b"\x00" * 4)
+    return hmac.new(key, server_challenge + temp, "md5").digest() + temp
+
+
+def ntlm_authenticate(challenge, user, domain, password):
+    """The AUTHENTICATE message. domain None takes the server's domain."""
+    if challenge[:8] != b"NTLMSSP\x00" or struct.unpack("<I", challenge[8:12])[0] != 2:
+        raise FeedError("invalid NTLM challenge")
+    server_flags = struct.unpack("<I", challenge[20:24])[0]
+    server_challenge = challenge[24:32]
+    info_len, _, info_off = struct.unpack("<HHI", challenge[40:48])
+    target_info = challenge[info_off:info_off + info_len]
+    av = ntlm_av_pairs(target_info)
+    if domain is None:
+        domain = av.get(2, b"").decode("utf-16-le")
+
+    key = ntowfv2(user, domain, password)
+    client_challenge = os.urandom(8)
+    timestamp = av.get(7) or struct.pack("<Q", int((time.time() + 11644473600) * 10_000_000))
+    nt_response = ntlmv2_response(key, server_challenge, client_challenge, timestamp, target_info)
+    # With a server timestamp the LM response is left empty (MS-NLMP 3.1.5.1.2).
+    if 7 in av:
+        lm_response = b"\x00" * 24
+    else:
+        lm_response = hmac.new(key, server_challenge + client_challenge, "md5").digest() + client_challenge
+
+    workstation = socket.gethostname().split(".")[0].upper()
+    fields = [lm_response, nt_response, domain.encode("utf-16-le"), user.encode("utf-16-le"),
+              workstation.encode("utf-16-le"), b""]
+    offset, secbufs, payload = 72, b"", b""
+    for field in fields:
+        secbufs += struct.pack("<HHI", len(field), len(field), offset)
+        payload += field
+        offset += len(field)
+    message = (b"NTLMSSP\x00" + struct.pack("<I", 3) + secbufs
+               + struct.pack("<I", server_flags & NTLM_FLAGS) + NTLM_VERSION + payload)
+    return message, domain
+
+
+# ---------------------------------------------------------------- HTTP
+
+class HiddenInputs(html.parser.HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.fields, self.action = {}, None
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "form" and self.action is None:
+            self.action = a.get("action")
+        elif tag == "input" and (a.get("type") or "").lower() == "hidden" and a.get("name"):
+            self.fields[a["name"]] = a.get("value") or ""
+
+
+class Session:
+    """One keep-alive connection with cookies. NTLM signs in the connection,
+    not the request, so the handshake has to stay on one socket."""
+
+    def __init__(self, url, user, domain, password, timeout=30):
+        parts = urllib.parse.urlsplit(url)
+        self.scheme = parts.scheme
+        self.host = parts.hostname
+        self.port = parts.port
+        self.user, self.domain, self.password = user, domain, password
+        self.detected_domain = domain
+        self.timeout = timeout
+        self.cookies = {"TSWAFeatureCheckCookie": "true"}
+        self.conn = None
+        self.forms_tried = False
+
+    def close(self):
+        if self.conn:
+            self.conn.close()
+            self.conn = None
+
+    def _connect(self):
+        if self.scheme == "http":
+            return http.client.HTTPConnection(self.host, self.port, timeout=self.timeout)
+        return http.client.HTTPSConnection(self.host, self.port, timeout=self.timeout,
+                                           context=ssl.create_default_context())
+
+    def path(self, url, base="/"):
+        parts = urllib.parse.urlsplit(urllib.parse.urljoin(f"{self.scheme}://{self.host}{base}", url))
+        if parts.hostname and parts.hostname.lower() != self.host.lower():
+            raise FeedError(f"redirected to another server: {parts.hostname}")
+        return urllib.parse.urlunsplit(("", "", parts.path or "/", parts.query, ""))
+
+    def send(self, method, path, body=None, headers=None):
+        hdrs = {"User-Agent": "TSWorkspace/2.0", "Accept": "*/*", "Connection": "keep-alive"}
+        if self.cookies:
+            hdrs["Cookie"] = "; ".join(f"{k}={v}" for k, v in self.cookies.items())
+        hdrs.update(headers or {})
+        for attempt in range(2):
+            if self.conn is None:
+                self.conn = self._connect()
+            try:
+                self.conn.request(method, path, body=body, headers=hdrs)
+                resp = self.conn.getresponse()
+                data = resp.read()
+                break
+            except (http.client.HTTPException, OSError):
+                self.close()
+                if attempt:
+                    raise
+        for name, value in resp.getheaders():
+            if name.lower() == "set-cookie":
+                cname, _, rest = value.partition("=")
+                cvalue = rest.split(";", 1)[0]
+                if cvalue and "01-jan-1970" not in value.lower():
+                    self.cookies[cname.strip()] = cvalue
+                else:
+                    self.cookies.pop(cname.strip(), None)
+        if (resp.getheader("Connection") or "").lower() == "close":
+            self.close()
+        return resp, data
+
+    def ntlm(self, method, path, body, headers):
+        auth = {"Authorization": "NTLM " + base64.b64encode(ntlm_negotiate()).decode()}
+        resp, data = self.send(method, path, body, {**(headers or {}), **auth})
+        challenge = next((v[5:] for k, v in resp.getheaders()
+                          if k.lower() == "www-authenticate" and v.startswith("NTLM ")), None)
+        if resp.status != 401 or not challenge:
+            return resp, data
+        message, self.detected_domain = ntlm_authenticate(
+            base64.b64decode(challenge), self.user, self.domain, self.password)
+        auth = {"Authorization": "NTLM " + base64.b64encode(message).decode()}
+        return self.send(method, path, body, {**(headers or {}), **auth})
+
+    def fetch(self, url, method="GET", body=None, headers=None):
+        path = original = self.path(url)
+        token_retry = True
+        for _ in range(10):
+            resp, data = self.send(method, path, body, headers)
+            if resp.status == 401:
+                offered = " ".join(v.lower() for k, v in resp.getheaders()
+                                   if k.lower() == "www-authenticate")
+                if "ntlm" in offered:
+                    resp, data = self.ntlm(method, path, body, headers)
+                if resp.status == 401:
+                    raise AuthError("the server did not accept the user name or password")
+            content_type = (resp.getheader("Content-Type") or "").lower()
+            if resp.status == 200 and content_type.startswith("application/x-msts-webfeed-login"):
+                token = data.decode("ascii", "replace").strip()
+                for name in FEED_AUTH_COOKIES:
+                    self.cookies[name] = token
+                if path != original and token_retry:
+                    path, token_retry = original, False
+                    continue
+            location = resp.getheader("Location")
+            if resp.status in (301, 302, 303, 307, 308) and location:
+                path = self.path(location, path)
+                if resp.status not in (307, 308):
+                    method, body, headers = "GET", None, None
+                continue
+            return resp, data, path
+        raise FeedError("too many redirects")
+
+    def forms_login(self, login_path):
+        """Some servers keep the .rdp files behind the RD Web form login."""
+        resp, data, path = self.fetch(login_path)
+        parser = HiddenInputs()
+        parser.feed(data.decode("utf-8", "replace"))
+        fields = dict(parser.fields)
+        user = self.user if "@" in self.user else f"{self.detected_domain}\\{self.user}"
+        fields.update({"DomainUserName": user, "UserPass": self.password,
+                       "MachineType": "private", "isUtf8": "1"})
+        fields.setdefault("flags", "0")
+        action = self.path(parser.action or path, path)
+        resp, data, path = self.fetch(action, "POST", urllib.parse.urlencode(fields),
+                                      {"Content-Type": "application/x-www-form-urlencoded"})
+        if "login.aspx" in path.lower():
+            raise AuthError("the RD Web form login failed")
+
+    def download(self, url):
+        resp, data, path = self.fetch(url)
+        if "login.aspx" in path.lower() and not self.forms_tried:
+            self.forms_tried = True
+            self.forms_login(path)
+            resp, data, path = self.fetch(url)
+        if resp.status != 200:
+            raise FeedError(f"HTTP {resp.status}")
+        return data
+
+
+# ---------------------------------------------------------------- The feed
+
+def local_tag(el):
+    return el.tag.rsplit("}", 1)[-1]
+
+
+def make_slug(text, taken):
+    # ä → a, é → e: the marks go, the letters stay.
+    text = "".join(c for c in unicodedata.normalize("NFKD", text) if not unicodedata.combining(c))
+    base = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:40].strip("-") or "app"
+    slug, n = base, 2
+    while slug in taken:
+        slug, n = f"{base}-{n}", n + 1
+    taken.add(slug)
+    return slug
+
+
+def common_suffix(names):
+    """The end all aliases share, like "-RemoteApps-CmsRdsh", from a dash on."""
+    if len(names) < 2:
+        return ""
+    suffix = os.path.commonprefix([n[::-1] for n in names])[::-1]
+    cut = suffix.find("-")
+    suffix = suffix[cut:] if cut >= 0 else ""
+    return suffix if all(len(n) > len(suffix) for n in names) else ""
+
+
+def parse_feed(data):
+    """The workspace name and its apps. Raises FeedError if this is no feed."""
+    try:
+        root = ET.fromstring(data)
+    except ET.ParseError:
+        raise FeedError("the server sent no feed")
+    if local_tag(root) != "ResourceCollection":
+        raise FeedError("the server sent no feed")
+    name = ""
+    apps = []
+    for el in root.iter():
+        tag = local_tag(el)
+        if tag == "Publisher" and not name:
+            name = (el.get("Name") or "").strip()
+        if tag != "Resource":
+            continue
+        rtype = el.get("Type") or "RemoteApp"
+        if rtype not in ("RemoteApp", "Desktop"):
+            continue
+        title = (el.get("Title") or "").strip()
+        alias = el.get("Alias") or title or el.get("ID") or "app"
+        icons, rdp_url, types = [], None, []
+        for sub in el.iter():
+            stag = local_tag(sub)
+            if stag == "FileExtension" and sub.get("Name"):
+                ext = sub.get("Name").strip().lstrip(".").lower()
+                if re.fullmatch(r"[a-z0-9_+-]+", ext) and ext not in types:
+                    types.append(ext)
+            elif stag.startswith("Icon") and sub.get("FileURL"):
+                dims = re.findall(r"\d+", sub.get("Dimensions") or stag) or ["0"]
+                icons.append({"url": sub.get("FileURL"), "type": (sub.get("FileType") or "").lower(),
+                              "size": int(dims[0])})
+            elif stag == "ResourceFile" and sub.get("URL") and rdp_url is None:
+                if (sub.get("FileExtension") or ".rdp").lower() == ".rdp":
+                    rdp_url = sub.get("URL")
+        if rdp_url:
+            apps.append({"alias": alias, "title": title or alias, "type": rtype,
+                         "rdp": rdp_url, "icons": icons, "types": types})
+    suffix = common_suffix([a["alias"] for a in apps])
+    taken = set()
+    for app in apps:
+        app["slug"] = make_slug(app["alias"][:len(app["alias"]) - len(suffix)], taken)
+    return name, apps
+
+
+def known_types(*names):
+    """The file types of a well-known app, from its program, title or alias."""
+    text = " ".join(names).lower()
+    for keys, types in KNOWN_TYPES:
+        if any(re.search(rf"(^|[^a-z0-9]){re.escape(k)}($|[^a-z0-9])", text) for k in keys):
+            return types.split()
+    return []
+
+
+# ---------------------------------------------------------------- .rdp files
+
+def decode_rdp(data):
+    if data.startswith(b"\xff\xfe") or data.startswith(b"\xfe\xff"):
+        return data.decode("utf-16")
+    if b"\x00" in data[:16]:
+        return data.decode("utf-16-le")
+    try:
+        return data.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return data.decode("latin-1")
+
+
+def rdp_set(text, name, kind, value):
+    pattern = re.compile(rf"^{re.escape(name)}:[isb]:[^\r\n]*", re.IGNORECASE | re.MULTILINE)
+    line = f"{name}:{kind}:{value}"
+    if pattern.search(text):
+        return pattern.sub(line, text)
+    return text.rstrip("\r\n") + "\r\n" + line + "\r\n"
+
+
+def rdp_del(text, name):
+    return re.sub(rf"^{re.escape(name)}:[isb]:[^\r\n]*\r?\n?", "", text, flags=re.IGNORECASE | re.MULTILINE)
+
+
+def sanitize_rdp(text):
+    # One sign-in for the gateway and the session, and never a prompt: started
+    # from the app menu, there is no terminal to ask in.
+    text = rdp_set(text, "promptcredentialonce", "i", "1")
+    text = rdp_set(text, "prompt for credentials on client", "i", "0")
+    # Drive letters mean nothing here, and FreeRDP reads "*" as every mount,
+    # camera or USB device of this computer. Sharing a folder is a setting.
+    for name in ("drivestoredirect", "devicestoredirect", "camerastoredirect", "usbdevicestoredirect"):
+        text = rdp_del(text, name)
+    return text
+
+
+# ---------------------------------------------------------------- Icons
+
+def png_encode(width, height, rows):
+    """RGBA rows, top down, as a PNG."""
+    def chunk(kind, payload):
+        return (struct.pack(">I", len(payload)) + kind + payload
+                + struct.pack(">I", zlib.crc32(kind + payload) & 0xFFFFFFFF))
+    raw = b"".join(b"\x00" + bytes(row) for row in rows)
+    return (PNG_SIGNATURE + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
+
+
+def dib_to_png(dib):
+    """One bitmap frame of an .ico (BITMAPINFOHEADER, 1 to 32 bits) as a PNG."""
+    header, width, height2, _, bpp, compression = struct.unpack("<IiiHHI", dib[:20])
+    height = abs(height2) // 2
+    if width <= 0 or height <= 0 or compression not in (0, 3) or bpp not in (1, 4, 8, 24, 32):
+        return None
+    off = header + (12 if compression == 3 else 0)
+    palette = []
+    if bpp <= 8:
+        count = struct.unpack("<I", dib[32:36])[0] or (1 << bpp)
+        for i in range(count):
+            b, g, r = dib[off + 4 * i:off + 4 * i + 3]
+            palette.append((r, g, b))
+        off += 4 * count
+    stride = ((width * bpp + 31) // 32) * 4
+    pixels = dib[off:off + stride * height]
+    mask_stride = ((width + 31) // 32) * 4
+    mask = dib[off + stride * height:off + stride * height + mask_stride * height]
+    alpha = bpp == 32 and any(pixels[i] for i in range(3, len(pixels), 4))
+
+    rows = []
+    for y in range(height):
+        src = height - 1 - y
+        row = pixels[src * stride:(src + 1) * stride]
+        mrow = mask[src * mask_stride:(src + 1) * mask_stride]
+        out = bytearray()
+        for x in range(width):
+            if bpp == 32:
+                b, g, r, a = row[4 * x:4 * x + 4]
+                if not alpha:
+                    a = 255
+            elif bpp == 24:
+                b, g, r = row[3 * x:3 * x + 3]
+                a = 255
+            else:
+                bit = x * bpp
+                index = (row[bit // 8] >> (8 - bpp - bit % 8)) & ((1 << bpp) - 1)
+                r, g, b = palette[index] if index < len(palette) else (0, 0, 0)
+                a = 255
+            if not alpha and x // 8 < len(mrow) and (mrow[x // 8] >> (7 - x % 8)) & 1:
+                a = 0
+            out += bytes((r, g, b, a))
+        rows.append(out)
+    return png_encode(width, height, rows)
+
+
+def ico_to_png(data):
+    """The biggest frame of an .ico, as a PNG. None if there is none to read."""
+    if data[:4] != b"\x00\x00\x01\x00":
+        return None
+    count = struct.unpack("<H", data[4:6])[0]
+    entries = []
+    for i in range(count):
+        entry = data[6 + 16 * i:22 + 16 * i]
+        if len(entry) < 16:
+            break
+        w, h, _, _, _, bpp, size, offset = struct.unpack("<BBBBHHII", entry)
+        entries.append(((w or 256) * (h or 256), bpp, size, offset))
+    for _, _, size, offset in sorted(entries, reverse=True):
+        frame = data[offset:offset + size]
+        if frame[:8] == PNG_SIGNATURE:
+            return frame
+        try:
+            png = dib_to_png(frame)
+        except (struct.error, ValueError, IndexError):
+            png = None
+        if png:
+            return png
+    return None
+
+
+def save_icon(session, app, dest):
+    candidates = [i for i in app["icons"] if i["type"] == "ico"]
+    candidates += sorted((i for i in app["icons"] if i["type"] != "ico"),
+                         key=lambda i: i["size"], reverse=True)
+    for icon in candidates:
+        try:
+            data = session.download(icon["url"])
+        except (FeedError, OSError, http.client.HTTPException):
+            continue
+        png = data if data[:8] == PNG_SIGNATURE else ico_to_png(data)
+        if png:
+            with open(dest, "wb") as f:
+                f.write(png)
+            return True
+    return False
+
+
+# ---------------------------------------------------------------- Main
+
+def say(*fields):
+    print("\t".join(str(f).replace("\t", " ").replace("\n", " ") for f in fields), flush=True)
+
+
+def run(args, password):
+    session = Session(args.url, args.user, args.domain, password, args.timeout)
+    resp, data, _ = session.fetch(args.url)
+    if resp.status != 200:
+        raise FeedError(f"HTTP {resp.status}")
+    name, apps = parse_feed(data)
+
+    os.makedirs(os.path.join(args.out, "rdp"), exist_ok=True)
+    os.makedirs(os.path.join(args.out, "icons"), exist_ok=True)
+    with open(os.path.join(args.out, "feed.xml"), "wb") as f:
+        f.write(data)
+    say("workspace", name or session.host)
+    say("domain", session.detected_domain or "")
+
+    done = []
+    for app in apps:
+        try:
+            text = decode_rdp(session.download(app["rdp"]))
+            if "full address:s:" not in text.lower():
+                raise FeedError("not an RDP file")
+            with open(os.path.join(args.out, "rdp", app["slug"] + ".rdp"), "w") as f:
+                f.write(sanitize_rdp(text))
+            if not app["types"] and app["type"] == "RemoteApp":
+                program = re.search(r"^remoteapplicationprogram:s:(.*)$", text, re.IGNORECASE | re.MULTILINE)
+                app["types"] = known_types(program.group(1) if program else "", app["title"], app["alias"])
+            save_icon(session, app, os.path.join(args.out, "icons", app["slug"] + ".png"))
+        except (FeedError, OSError, http.client.HTTPException) as e:
+            say("skip", app["title"], e)
+            continue
+        done.append(app)
+        say("app", app["slug"], app["type"], app["title"])
+
+    with open(os.path.join(args.out, "apps.tsv"), "w") as f:
+        for app in done:
+            f.write("\t".join((app["slug"], app["type"], app["title"].replace("\t", " "),
+                               " ".join(app["types"]))) + "\n")
+
+
+def main(argv):
+    parser = argparse.ArgumentParser(prog="rdfeed-fetch", description="Download the apps of an RD Web Access feed.")
+    parser.add_argument("--url", required=True)
+    parser.add_argument("--user", required=True)
+    parser.add_argument("--domain", help="Windows domain; without it the server's own is used")
+    parser.add_argument("--out", required=True, help="directory for the downloaded files")
+    parser.add_argument("--timeout", type=float, default=30)
+    args = parser.parse_args(argv)
+
+    password = sys.stdin.readline().rstrip("\n")
+    try:
+        run(args, password)
+    except FeedError as e:
+        print(f"rdfeed-fetch: {e}", file=sys.stderr)
+        return e.code
+    except (OSError, http.client.HTTPException) as e:
+        print(f"rdfeed-fetch: {e}", file=sys.stderr)
+        return EXIT_NETWORK
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

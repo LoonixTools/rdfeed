@@ -1,0 +1,30 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: tests and shellcheck
+    runs-on: ubuntu-latest
+    # Arch has FreeRDP 3, which the hook test loads.
+    container: archlinux:latest
+    steps:
+      - name: Install the tools
+        run: |
+          pacman -Syu --noconfirm --needed git base-devel python freerdp shared-mime-info \
+            gettext scdoc shellcheck desktop-file-utils
+
+      - uses: actions/checkout@v7
+
+      - run: make check
+
+      # NTLM against the spec's test vectors, the feed, the .rdp files, the
+      # icons, a fake RD Web server, the hook and the command end to end.
+      - run: make test
+
+      - name: Build the catalogs and the man page
+        run: make build

@@ -1,0 +1,8 @@
+[Unit]
+Description=Load the apps of the rdfeed workspaces again
+Documentation=man:rdfeed(1)
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=@BINDIR@/rdfeed refresh --quiet

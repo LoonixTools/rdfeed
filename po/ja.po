@@ -1,0 +1,561 @@
+# Japanese translation for rdfeed.
+# Copyright (C) 2026 Felitendo
+# This file is distributed under the same license as rdfeed.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: rdfeed 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/LoonixTools/rdfeed/issues\n"
+"POT-Creation-Date: 2026-10-02 10:29+0200\n"
+"PO-Revision-Date: 2026-10-02 09:30+0200\n"
+"Last-Translator: Felitendo\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/rdfeed:79 src/rdfeed:103
+#, sh-printf-format
+msgid "Could not write to %s."
+msgstr "%s に書き込めませんでした。"
+
+#: src/rdfeed:82
+#, sh-printf-format
+msgid "Signing in to %s…"
+msgstr "%s にサインインしています…"
+
+#: src/rdfeed:100
+msgid ""
+"The password could not be saved in the keyring, so each app asks for it."
+msgstr ""
+"パスワードをキーリングに保存できなかったため、アプリごとに入力を求めます。"
+
+#: src/rdfeed:111
+#, sh-printf-format
+msgid "1 app from %s is now in your app menu."
+msgstr "%s のアプリ 1 個がアプリメニューに追加されました。"
+
+#: src/rdfeed:113
+#, sh-printf-format
+msgid "%d apps from %s are now in your app menu."
+msgstr "%d 個のアプリ（%s）がアプリメニューに追加されました。"
+
+#: src/rdfeed:129
+msgid ""
+"Your IT department has the address. A work e-mail address often works too."
+msgstr ""
+"アドレスは IT 部門が知っています。仕事用のメールアドレスでも使えることがよく"
+"あります。"
+
+#: src/rdfeed:130
+msgid "Feed address, server or e-mail:"
+msgstr "フィードのアドレス、サーバー、またはメール:"
+
+#: src/rdfeed:137
+#, sh-printf-format
+msgid "No feed is registered for %s. Ask your IT department for the address."
+msgstr ""
+"%s にはフィードが登録されていません。IT 部門にアドレスを確認してください。"
+
+#: src/rdfeed:142 src/rdfeed:156
+msgid "User name (DOMAIN\\name or name@domain):"
+msgstr "ユーザー名（DOMAIN\\name または name@domain）:"
+
+#: src/rdfeed:146 src/rdfeed:159
+msgid "Password:"
+msgstr "パスワード:"
+
+#: src/rdfeed:178 src/rdfeed:236
+#, sh-printf-format
+msgid "No workspace yet. Add one with `%s add`."
+msgstr "ワークスペースはまだありません。`%s add` で追加してください。"
+
+#: src/rdfeed:187 src/lib/launch.sh:220
+#, sh-printf-format
+msgid "No password saved for %s. Sign in again in rdfeed."
+msgstr ""
+"%s のパスワードが保存されていません。rdfeed でもう一度サインインしてくださ"
+"い。"
+
+#: src/rdfeed:191 src/lib/launch.sh:149
+#, sh-printf-format
+msgid "Password for %s:"
+msgstr "%s のパスワード:"
+
+#: src/rdfeed:195
+#, sh-printf-format
+msgid "Refreshing %s…"
+msgstr "%s を更新しています…"
+
+#: src/rdfeed:205
+msgid "The password no longer works. Sign in again in rdfeed."
+msgstr ""
+"パスワードが使えなくなりました。rdfeed でもう一度サインインしてください。"
+
+#: src/rdfeed:214
+#, sh-printf-format
+msgid "%s: %d apps"
+msgstr "%s: アプリ %d 個"
+
+#: src/rdfeed:222
+#, sh-printf-format
+msgid "Which workspace? See `%s list` for the names."
+msgstr "どのワークスペースですか？名前は `%s list` で確認できます。"
+
+#: src/rdfeed:229
+#, sh-printf-format
+msgid "%s and its apps are removed."
+msgstr "%s とそのアプリを削除しました。"
+
+#: src/rdfeed:253
+#, sh-printf-format
+msgid "Which app? See `%s list`."
+msgstr "どのアプリですか？`%s list` を参照してください。"
+
+#: src/rdfeed:268 src/lib/launch.sh:199
+#, sh-printf-format
+msgid "There is no app %s. See `%s list`."
+msgstr "アプリ %s はありません。`%s list` を参照してください。"
+
+#: src/rdfeed:270
+#, sh-printf-format
+msgid "Several workspaces have %s. Write it as WORKSPACE/APP, see `%s list`."
+msgstr ""
+"複数のワークスペースに %s があります。ワークスペース/アプリ の形で指定してく"
+"ださい（`%s list` を参照）。"
+
+#: src/rdfeed:278
+msgid "Usage: rdfeed [command]"
+msgstr "使い方: rdfeed [コマンド]"
+
+#: src/rdfeed:280
+msgid "Commands:"
+msgstr "コマンド:"
+
+#: src/rdfeed:281
+msgid "Add the workspace of your company"
+msgstr "会社のワークスペースを追加する"
+
+#: src/rdfeed:282
+msgid "Load the apps again"
+msgstr "アプリを読み込み直す"
+
+#: src/rdfeed:283
+msgid "List the workspaces and their apps"
+msgstr "ワークスペースとそのアプリを一覧表示する"
+
+#: src/rdfeed:284
+msgid "Start an app, or open a file with it"
+msgstr "アプリを起動する、またはファイルを開く"
+
+#: src/rdfeed:285
+msgid "Remove a workspace and its apps"
+msgstr "ワークスペースとそのアプリを削除する"
+
+#: src/rdfeed:286
+msgid "Show this help"
+msgstr "このヘルプを表示"
+
+#: src/rdfeed:287
+msgid "Show the version"
+msgstr "バージョンを表示"
+
+#: src/rdfeed:289
+msgid "Without a command an interactive menu is shown."
+msgstr "コマンドなしで起動すると、対話式メニューが表示されます。"
+
+#: src/rdfeed:313
+#, sh-printf-format
+msgid "Unknown command: %s"
+msgstr "不明なコマンド: %s"
+
+#: src/lib/common.sh:174 src/lib/menu.sh:251
+msgid "never"
+msgstr "なし"
+
+#: src/lib/common.sh:184
+msgid "just now"
+msgstr "たった今"
+
+#: src/lib/common.sh:186
+msgid "1 minute ago"
+msgstr "1 分前"
+
+#: src/lib/common.sh:189
+#, sh-printf-format
+msgid "%d minutes ago"
+msgstr "%d 分前"
+
+#: src/lib/common.sh:191
+msgid "1 hour ago"
+msgstr "1 時間前"
+
+#: src/lib/common.sh:194
+#, sh-printf-format
+msgid "%d hours ago"
+msgstr "%d 時間前"
+
+#: src/lib/common.sh:196
+msgid "1 day ago"
+msgstr "1 日前"
+
+#: src/lib/common.sh:199
+#, sh-printf-format
+msgid "%d days ago"
+msgstr "%d 日前"
+
+#: src/lib/launch.sh:169
+msgid ""
+"Your password has expired. Change it on Windows or on the RD Web page, then "
+"sign in again in rdfeed."
+msgstr ""
+"パスワードの有効期限が切れています。Windows か RD Web のページで変更してか"
+"ら、rdfeed でもう一度サインインしてください。"
+
+#: src/lib/launch.sh:171
+msgid "Your account is locked. Ask your IT department."
+msgstr "アカウントがロックされています。IT 部門に問い合わせてください。"
+
+#: src/lib/launch.sh:173
+msgid "The server did not accept the password. Sign in again in rdfeed."
+msgstr ""
+"サーバーがパスワードを受け付けませんでした。rdfeed でもう一度サインインしてく"
+"ださい。"
+
+#: src/lib/launch.sh:175
+msgid "Could not reach the server. Check the internet connection."
+msgstr "サーバーに接続できませんでした。インターネット接続を確認してください。"
+
+#: src/lib/launch.sh:178
+#, sh-printf-format
+msgid "FreeRDP stopped: %s"
+msgstr "FreeRDP が停止しました: %s"
+
+#: src/lib/launch.sh:205 src/lib/launch.sh:206
+#, sh-printf-format
+msgid "File not found: %s"
+msgstr "ファイルが見つかりません: %s"
+
+#: src/lib/launch.sh:212 src/lib/launch.sh:213
+msgid ""
+"FreeRDP 3 is missing. Install it to start the apps (the package is called "
+"freerdp)."
+msgstr ""
+"FreeRDP 3 がありません。アプリを起動するにはインストールしてください（パッ"
+"ケージ名は freerdp）。"
+
+#: src/lib/launch.sh:277
+#, sh-printf-format
+msgid "Opening %s in %s"
+msgstr "%s を %s で開いています"
+
+#: src/lib/launch.sh:278
+#, sh-printf-format
+msgid "If it does not open by itself, open it in the app from the drive %s."
+msgstr "自動で開かない場合は、アプリでドライブ %s から開いてください。"
+
+#: src/lib/launch.sh:280
+#, sh-printf-format
+msgid "Starting %s"
+msgstr "%s を起動しています"
+
+#: src/lib/launch.sh:281
+msgid ""
+"If your company uses MFA, confirm the sign-in in your authenticator app."
+msgstr ""
+"会社が MFA を使っている場合は、認証アプリでサインインを承認してください。"
+
+#: src/lib/launch.sh:290
+msgid "A second sign-in is coming"
+msgstr "2 回目のサインインが来ます"
+
+#: src/lib/launch.sh:291
+#, sh-printf-format
+msgid ""
+"Confirm the second prompt in your authenticator app too. It comes in about "
+"%d seconds."
+msgstr "認証アプリで 2 回目の確認も承認してください。約 %d 秒後に届きます。"
+
+#: src/lib/launch.sh:301
+#, sh-printf-format
+msgid "%s could not start"
+msgstr "%s を起動できませんでした"
+
+#: src/lib/launch.sh:303
+#, sh-printf-format
+msgid "Log: %s"
+msgstr "ログ: %s"
+
+#. TRANSLATORS: the letter after "[" is the key for yes. y works too.
+#: src/lib/menu.sh:93
+msgid "[y/N]"
+msgstr "[y/N]"
+
+#: src/lib/menu.sh:163
+msgid "1 app"
+msgstr "アプリ 1 個"
+
+#: src/lib/menu.sh:165
+#, sh-printf-format
+msgid "%d apps"
+msgstr "アプリ %d 個"
+
+#: src/lib/menu.sh:190
+msgid "No workspace yet. Add the one of your company with [1]."
+msgstr ""
+"ワークスペースはまだありません。[1] で会社のワークスペースを追加してくださ"
+"い。"
+
+#: src/lib/menu.sh:233
+msgid "off"
+msgstr "オフ"
+
+#: src/lib/menu.sh:234
+msgid "home folder"
+msgstr "ホームフォルダー"
+
+#: src/lib/menu.sh:237
+msgid "Documents"
+msgstr "ドキュメント"
+
+#: src/lib/menu.sh:238
+msgid "Downloads"
+msgstr "ダウンロード"
+
+#: src/lib/menu.sh:243
+msgid "not found"
+msgstr "見つかりません"
+
+#: src/lib/menu.sh:246
+#, sh-printf-format
+msgid "automatic (%d %%)"
+msgstr "自動 (%d %%)"
+
+#: src/lib/menu.sh:248
+msgid "classic"
+msgstr "クラシック"
+
+#: src/lib/menu.sh:249
+msgid "GFX"
+msgstr "GFX"
+
+#: src/lib/menu.sh:250
+msgid "always"
+msgstr "常に"
+
+#: src/lib/menu.sh:252
+msgid "automatic"
+msgstr "自動"
+
+#: src/lib/menu.sh:261
+msgid ""
+"The apps only see the files on the server. Pick a folder to open and save "
+"files of this computer in them."
+msgstr ""
+"アプリはサーバー上のファイルしか見えません。フォルダーを選ぶと、このコン"
+"ピューターのファイルを開いたり保存したりできます。"
+
+#: src/lib/menu.sh:262
+msgid ""
+"The apps can open and save files in this folder. It shows up as a drive in "
+"them."
+msgstr ""
+"アプリはこのフォルダーのファイルを開いたり保存したりできます。アプリ内ではド"
+"ライブとして表示されます。"
+
+#: src/lib/menu.sh:263
+msgid ""
+"Offers the apps under \"Open with\" for their file types, for example Word "
+"for .docx. The folder of the file is shared with the app while it is open."
+msgstr ""
+"ファイルの種類ごとに「アプリケーションで開く」にアプリを表示します"
+"（例: .docx なら Word）。ファイルを開いている間、そのフォルダーが共有されま"
+"す。"
+
+#: src/lib/menu.sh:264
+msgid ""
+"How big the apps are drawn. Automatic follows the scale of your desktop, so "
+"they are sharp and the right size."
+msgstr ""
+"アプリを描く大きさです。自動ではデスクトップの拡大率に合わせるので、くっきり"
+"と適切な大きさになります。"
+
+#: src/lib/menu.sh:265
+msgid "Plays the sound of the apps here, for calls and videos."
+msgstr "アプリの音をこのコンピューターで再生します。通話や動画に。"
+
+#: src/lib/menu.sh:266
+msgid ""
+"Paints every window right. But some servers end the session right after "
+"signing in, then go back to GFX."
+msgstr "すべてのウィンドウを正しく描きます。ただしサインイン直後にセッションを切るサーバーもあり、その場合は GFX に戻してください。"
+
+#: src/lib/menu.sh:267
+msgid ""
+"Works with every server. FreeRDP may not repaint a window after it was "
+"minimized or resized."
+msgstr "どのサーバーでも動きます。最小化やサイズ変更の後、FreeRDP がウィンドウを描き直さないことがあります。"
+
+#: src/lib/menu.sh:268
+msgid ""
+"Always waits before the second sign-in. For when the second prompt does not "
+"come with automatic."
+msgstr ""
+"2 回目のサインインの前に必ず待ちます。自動で 2 回目の確認が来ないときに。"
+
+#: src/lib/menu.sh:269
+msgid "Never waits. Right when your company has no MFA."
+msgstr "待ちません。会社が MFA を使っていないとき向けです。"
+
+#: src/lib/menu.sh:270
+msgid ""
+"Many servers with MFA need a second sign-in, and its prompt only comes after "
+"a short wait. Automatic waits when the first sign-in took a while."
+msgstr ""
+"MFA を使う多くのサーバーでは 2 回目のサインインが必要で、その確認は少し待たな"
+"いと届きません。自動では、1 回目に時間がかかったときに待ちます。"
+
+#: src/lib/menu.sh:273
+msgid ""
+"Loads the list of apps again once a day, so new apps show up by themselves."
+msgstr ""
+"1 日 1 回アプリの一覧を読み込み直すので、新しいアプリが自動で現れます。"
+
+#: src/lib/menu.sh:275 src/lib/menu.sh:330
+msgid "Needs a systemd user session."
+msgstr "systemd のユーザーセッションが必要です。"
+
+#: src/lib/menu.sh:322 src/lib/menu.sh:325
+msgid "Could not save the setting."
+msgstr "設定を保存できませんでした。"
+
+#: src/lib/menu.sh:371 src/lib/menu.sh:609
+msgid "Settings"
+msgstr "設定"
+
+#: src/lib/menu.sh:372
+msgid "↑↓ select   ←→ or Space: change   q: back"
+msgstr "↑↓ 選択   ←→ またはスペース: 変更   q: 戻る"
+
+#: src/lib/menu.sh:373
+msgid "ON"
+msgstr "オン"
+
+#: src/lib/menu.sh:374
+msgid "OFF"
+msgstr "オフ"
+
+#: src/lib/menu.sh:456 src/lib/menu.sh:608
+msgid "Workspaces"
+msgstr "ワークスペース"
+
+#. TRANSLATORS: keep the letters, they are the keys.
+#: src/lib/menu.sh:458
+msgid ""
+"↑↓ select   r: refresh   s: sign in again   d: remove   a: add   q: back"
+msgstr "↑↓ 選択   r: 更新   s: 再サインイン   d: 削除   a: 追加   q: 戻る"
+
+#: src/lib/menu.sh:459
+msgid "No workspace yet. Press a to add one."
+msgstr "ワークスペースはまだありません。a で追加できます。"
+
+#: src/lib/menu.sh:484
+#, sh-printf-format
+msgid "refreshed %s"
+msgstr "%sに更新"
+
+#: src/lib/menu.sh:512
+#, sh-printf-format
+msgid "Remove \"%s\" and its apps?"
+msgstr "「%s」とそのアプリを削除しますか？"
+
+#: src/lib/menu.sh:536 src/lib/menu.sh:607
+msgid "Start an app"
+msgstr "アプリを起動する"
+
+#: src/lib/menu.sh:537
+msgid "↑↓ select   Enter: start   q: back"
+msgstr "↑↓ 選択   Enter: 起動   q: 戻る"
+
+#: src/lib/menu.sh:538
+msgid "No apps yet. Add a workspace first."
+msgstr "アプリはまだありません。先にワークスペースを追加してください。"
+
+#: src/lib/menu.sh:579
+#, sh-printf-format
+msgid "%s is starting. It opens in a window of its own."
+msgstr "%s を起動しています。専用のウィンドウで開きます。"
+
+#: src/lib/menu.sh:606
+msgid "Add a workspace"
+msgstr "ワークスペースを追加"
+
+#: src/lib/menu.sh:610
+msgid "Quit"
+msgstr "終了"
+
+#: src/lib/workspace.sh:163
+msgid "The server did not accept the user name or password."
+msgstr "サーバーがユーザー名またはパスワードを受け付けませんでした。"
+
+#: src/lib/workspace.sh:164
+#, sh-printf-format
+msgid "Could not reach the server: %s"
+msgstr "サーバーに接続できませんでした: %s"
+
+#: src/lib/workspace.sh:165
+#, sh-printf-format
+msgid "There is no RD Web feed at %s."
+msgstr "%s に RD Web のフィードはありません。"
+
+#: src/lib/workspace.sh:166
+#, sh-printf-format
+msgid "Could not load the apps: %s"
+msgstr "アプリを読み込めませんでした: %s"
+
+#: src/lib/workspace.sh:282
+#, sh-printf-format
+msgid "Remote desktop of %s"
+msgstr "%s のリモートデスクトップ"
+
+#: src/lib/workspace.sh:284
+#, sh-printf-format
+msgid "%s from %s"
+msgstr "%s（%s）"
+
+#: src/lib/menu.sh
+msgid "Apps"
+msgstr "アプリ"
+
+#: src/lib/menu.sh
+msgid "Share a folder"
+msgstr "フォルダーを共有"
+
+#: src/lib/menu.sh
+msgid "Open files with the apps"
+msgstr "ファイルをアプリで開く"
+
+#: src/lib/menu.sh
+msgid "Size"
+msgstr "サイズ"
+
+#: src/lib/menu.sh
+msgid "Sound"
+msgstr "音声"
+
+#: src/lib/menu.sh
+msgid "Graphics"
+msgstr "グラフィック"
+
+#: src/lib/menu.sh
+msgid "Signing in"
+msgstr "サインイン"
+
+#: src/lib/menu.sh
+msgid "Wait for the second MFA prompt"
+msgstr "2 回目の MFA 確認を待つ"
+
+#: src/lib/menu.sh
+msgid "Refresh the apps every day"
+msgstr "アプリを毎日更新"

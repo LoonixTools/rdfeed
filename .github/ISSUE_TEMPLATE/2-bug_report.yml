@@ -1,0 +1,98 @@
+name: 🐛 Bug report
+description: Something does not work as it should.
+labels:
+- bug
+body:
+- type: markdown
+  attributes:
+    value: Thanks for taking the time! The more you fill in, the faster it can be fixed. Please leave out your company's server names and your user name.
+- type: checkboxes
+  id: checks
+  attributes:
+    label: Before you start
+    options:
+    - label: I searched the issues and this is not reported yet.
+      required: true
+    - label: I use the latest version.
+      required: true
+- type: textarea
+  id: what
+  attributes:
+    label: What happened?
+    description: What did you do, and what went wrong?
+  validations:
+    required: true
+- type: textarea
+  id: steps
+  attributes:
+    label: Steps to reproduce
+    placeholder: |
+      1.
+      2.
+      3.
+- type: textarea
+  id: expected
+  attributes:
+    label: What did you expect?
+  validations:
+    required: true
+- type: dropdown
+  id: where
+  attributes:
+    label: Where does it happen?
+    multiple: true
+    options:
+    - Adding a workspace
+    - Starting an app
+    - The app window (drawing, keyboard, size)
+    - MFA prompts
+    - The app menu
+    - The menu
+    - Other
+  validations:
+    required: true
+- type: dropdown
+  id: mfa
+  attributes:
+    label: Does your company use MFA?
+    options:
+    - "Yes"
+    - "No"
+    - I don't know
+- type: input
+  id: version
+  attributes:
+    label: Version
+    description: The output of `rdfeed --version` and `xfreerdp3 /version`.
+    placeholder: rdfeed 1.0.0, FreeRDP 3.32.1
+  validations:
+    required: true
+- type: dropdown
+  id: install
+  attributes:
+    label: How did you install it?
+    options:
+    - AUR (Arch, CachyOS, EndeavourOS, Manjaro)
+    - Built from source
+    - Other
+  validations:
+    required: true
+- type: input
+  id: system
+  attributes:
+    label: System
+    description: Distribution, desktop and its version, Wayland or X11.
+    placeholder: CachyOS, KDE Plasma 6.7, Wayland
+  validations:
+    required: true
+- type: textarea
+  id: logs
+  attributes:
+    label: Log
+    description: For a start that goes wrong, the log from `~/.cache/rdfeed/` (one file per app). Remove server names and user names first.
+    render: shell
+- type: textarea
+  id: more
+  attributes:
+    label: Anything else?
+    description: Screenshots or anything else that could help.

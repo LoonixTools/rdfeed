@@ -1,0 +1,547 @@
+# Korean translation for rdfeed.
+# Copyright (C) 2026 Felitendo
+# This file is distributed under the same license as rdfeed.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: rdfeed 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/LoonixTools/rdfeed/issues\n"
+"POT-Creation-Date: 2026-10-02 10:29+0200\n"
+"PO-Revision-Date: 2026-10-02 09:30+0200\n"
+"Last-Translator: Felitendo\n"
+"Language-Team: Korean\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/rdfeed:79 src/rdfeed:103
+#, sh-printf-format
+msgid "Could not write to %s."
+msgstr "%s에 쓰지 못했습니다."
+
+#: src/rdfeed:82
+#, sh-printf-format
+msgid "Signing in to %s…"
+msgstr "%s에 로그인하는 중…"
+
+#: src/rdfeed:100
+msgid ""
+"The password could not be saved in the keyring, so each app asks for it."
+msgstr "비밀번호를 키링에 저장하지 못해 앱마다 비밀번호를 묻습니다."
+
+#: src/rdfeed:111
+#, sh-printf-format
+msgid "1 app from %s is now in your app menu."
+msgstr "%s의 앱 1개가 앱 메뉴에 추가되었습니다."
+
+#: src/rdfeed:113
+#, sh-printf-format
+msgid "%d apps from %s are now in your app menu."
+msgstr "앱 %d개(%s)가 앱 메뉴에 추가되었습니다."
+
+#: src/rdfeed:129
+msgid ""
+"Your IT department has the address. A work e-mail address often works too."
+msgstr ""
+"주소는 IT 부서에서 알려 줍니다. 회사 이메일 주소로도 되는 경우가 많습니다."
+
+#: src/rdfeed:130
+msgid "Feed address, server or e-mail:"
+msgstr "피드 주소, 서버 또는 이메일:"
+
+#: src/rdfeed:137
+#, sh-printf-format
+msgid "No feed is registered for %s. Ask your IT department for the address."
+msgstr "%s에 등록된 피드가 없습니다. IT 부서에 주소를 물어보세요."
+
+#: src/rdfeed:142 src/rdfeed:156
+msgid "User name (DOMAIN\\name or name@domain):"
+msgstr "사용자 이름 (DOMAIN\\name 또는 name@domain):"
+
+#: src/rdfeed:146 src/rdfeed:159
+msgid "Password:"
+msgstr "비밀번호:"
+
+#: src/rdfeed:178 src/rdfeed:236
+#, sh-printf-format
+msgid "No workspace yet. Add one with `%s add`."
+msgstr "아직 작업 공간이 없습니다. `%s add`로 추가하세요."
+
+#: src/rdfeed:187 src/lib/launch.sh:220
+#, sh-printf-format
+msgid "No password saved for %s. Sign in again in rdfeed."
+msgstr "%s의 비밀번호가 저장되어 있지 않습니다. rdfeed에서 다시 로그인하세요."
+
+#: src/rdfeed:191 src/lib/launch.sh:149
+#, sh-printf-format
+msgid "Password for %s:"
+msgstr "%s 비밀번호:"
+
+#: src/rdfeed:195
+#, sh-printf-format
+msgid "Refreshing %s…"
+msgstr "%s 새로 고치는 중…"
+
+#: src/rdfeed:205
+msgid "The password no longer works. Sign in again in rdfeed."
+msgstr "비밀번호가 더 이상 맞지 않습니다. rdfeed에서 다시 로그인하세요."
+
+#: src/rdfeed:214
+#, sh-printf-format
+msgid "%s: %d apps"
+msgstr "%s: 앱 %d개"
+
+#: src/rdfeed:222
+#, sh-printf-format
+msgid "Which workspace? See `%s list` for the names."
+msgstr "어느 작업 공간인가요? 이름은 `%s list`에서 볼 수 있습니다."
+
+#: src/rdfeed:229
+#, sh-printf-format
+msgid "%s and its apps are removed."
+msgstr "%s와(과) 해당 앱을 삭제했습니다."
+
+#: src/rdfeed:253
+#, sh-printf-format
+msgid "Which app? See `%s list`."
+msgstr "어느 앱인가요? `%s list`를 보세요."
+
+#: src/rdfeed:268 src/lib/launch.sh:199
+#, sh-printf-format
+msgid "There is no app %s. See `%s list`."
+msgstr "%s 앱이 없습니다. `%s list`를 보세요."
+
+#: src/rdfeed:270
+#, sh-printf-format
+msgid "Several workspaces have %s. Write it as WORKSPACE/APP, see `%s list`."
+msgstr ""
+"여러 작업 공간에 %s이(가) 있습니다. 작업공간/앱 형식으로 쓰세요. `%s list`를 "
+"보세요."
+
+#: src/rdfeed:278
+msgid "Usage: rdfeed [command]"
+msgstr "사용법: rdfeed [명령]"
+
+#: src/rdfeed:280
+msgid "Commands:"
+msgstr "명령:"
+
+#: src/rdfeed:281
+msgid "Add the workspace of your company"
+msgstr "회사의 작업 공간 추가"
+
+#: src/rdfeed:282
+msgid "Load the apps again"
+msgstr "앱 다시 불러오기"
+
+#: src/rdfeed:283
+msgid "List the workspaces and their apps"
+msgstr "작업 공간과 앱 목록 보기"
+
+#: src/rdfeed:284
+msgid "Start an app, or open a file with it"
+msgstr "앱 시작 또는 파일 열기"
+
+#: src/rdfeed:285
+msgid "Remove a workspace and its apps"
+msgstr "작업 공간과 앱 삭제"
+
+#: src/rdfeed:286
+msgid "Show this help"
+msgstr "이 도움말 보기"
+
+#: src/rdfeed:287
+msgid "Show the version"
+msgstr "버전 보기"
+
+#: src/rdfeed:289
+msgid "Without a command an interactive menu is shown."
+msgstr "명령 없이 실행하면 대화형 메뉴가 나옵니다."
+
+#: src/rdfeed:313
+#, sh-printf-format
+msgid "Unknown command: %s"
+msgstr "알 수 없는 명령: %s"
+
+#: src/lib/common.sh:174 src/lib/menu.sh:251
+msgid "never"
+msgstr "없음"
+
+#: src/lib/common.sh:184
+msgid "just now"
+msgstr "방금"
+
+#: src/lib/common.sh:186
+msgid "1 minute ago"
+msgstr "1분 전"
+
+#: src/lib/common.sh:189
+#, sh-printf-format
+msgid "%d minutes ago"
+msgstr "%d분 전"
+
+#: src/lib/common.sh:191
+msgid "1 hour ago"
+msgstr "1시간 전"
+
+#: src/lib/common.sh:194
+#, sh-printf-format
+msgid "%d hours ago"
+msgstr "%d시간 전"
+
+#: src/lib/common.sh:196
+msgid "1 day ago"
+msgstr "1일 전"
+
+#: src/lib/common.sh:199
+#, sh-printf-format
+msgid "%d days ago"
+msgstr "%d일 전"
+
+#: src/lib/launch.sh:169
+msgid ""
+"Your password has expired. Change it on Windows or on the RD Web page, then "
+"sign in again in rdfeed."
+msgstr ""
+"비밀번호가 만료되었습니다. Windows나 RD Web 페이지에서 바꾼 다음 rdfeed에서 "
+"다시 로그인하세요."
+
+#: src/lib/launch.sh:171
+msgid "Your account is locked. Ask your IT department."
+msgstr "계정이 잠겼습니다. IT 부서에 문의하세요."
+
+#: src/lib/launch.sh:173
+msgid "The server did not accept the password. Sign in again in rdfeed."
+msgstr "서버가 비밀번호를 받아들이지 않았습니다. rdfeed에서 다시 로그인하세요."
+
+#: src/lib/launch.sh:175
+msgid "Could not reach the server. Check the internet connection."
+msgstr "서버에 연결하지 못했습니다. 인터넷 연결을 확인하세요."
+
+#: src/lib/launch.sh:178
+#, sh-printf-format
+msgid "FreeRDP stopped: %s"
+msgstr "FreeRDP가 멈췄습니다: %s"
+
+#: src/lib/launch.sh:205 src/lib/launch.sh:206
+#, sh-printf-format
+msgid "File not found: %s"
+msgstr "파일을 찾을 수 없습니다: %s"
+
+#: src/lib/launch.sh:212 src/lib/launch.sh:213
+msgid ""
+"FreeRDP 3 is missing. Install it to start the apps (the package is called "
+"freerdp)."
+msgstr ""
+"FreeRDP 3이 없습니다. 앱을 시작하려면 설치하세요(패키지 이름은 freerdp)."
+
+#: src/lib/launch.sh:277
+#, sh-printf-format
+msgid "Opening %s in %s"
+msgstr "%s 파일을 %s(으)로 여는 중"
+
+#: src/lib/launch.sh:278
+#, sh-printf-format
+msgid "If it does not open by itself, open it in the app from the drive %s."
+msgstr "저절로 열리지 않으면 앱에서 %s 드라이브의 파일을 여세요."
+
+#: src/lib/launch.sh:280
+#, sh-printf-format
+msgid "Starting %s"
+msgstr "%s 시작하는 중"
+
+#: src/lib/launch.sh:281
+msgid ""
+"If your company uses MFA, confirm the sign-in in your authenticator app."
+msgstr "회사에서 MFA를 쓴다면 인증 앱에서 로그인을 승인하세요."
+
+#: src/lib/launch.sh:290
+msgid "A second sign-in is coming"
+msgstr "두 번째 로그인이 옵니다"
+
+#: src/lib/launch.sh:291
+#, sh-printf-format
+msgid ""
+"Confirm the second prompt in your authenticator app too. It comes in about "
+"%d seconds."
+msgstr "인증 앱에서 두 번째 요청도 승인하세요. 약 %d초 뒤에 옵니다."
+
+#: src/lib/launch.sh:301
+#, sh-printf-format
+msgid "%s could not start"
+msgstr "%s을(를) 시작하지 못했습니다"
+
+#: src/lib/launch.sh:303
+#, sh-printf-format
+msgid "Log: %s"
+msgstr "로그: %s"
+
+#. TRANSLATORS: the letter after "[" is the key for yes. y works too.
+#: src/lib/menu.sh:93
+msgid "[y/N]"
+msgstr "[y/N]"
+
+#: src/lib/menu.sh:163
+msgid "1 app"
+msgstr "앱 1개"
+
+#: src/lib/menu.sh:165
+#, sh-printf-format
+msgid "%d apps"
+msgstr "앱 %d개"
+
+#: src/lib/menu.sh:190
+msgid "No workspace yet. Add the one of your company with [1]."
+msgstr "아직 작업 공간이 없습니다. [1]로 회사의 작업 공간을 추가하세요."
+
+#: src/lib/menu.sh:233
+msgid "off"
+msgstr "꺼짐"
+
+#: src/lib/menu.sh:234
+msgid "home folder"
+msgstr "홈 폴더"
+
+#: src/lib/menu.sh:237
+msgid "Documents"
+msgstr "문서"
+
+#: src/lib/menu.sh:238
+msgid "Downloads"
+msgstr "다운로드"
+
+#: src/lib/menu.sh:243
+msgid "not found"
+msgstr "찾을 수 없음"
+
+#: src/lib/menu.sh:246
+#, sh-printf-format
+msgid "automatic (%d %%)"
+msgstr "자동 (%d%%)"
+
+#: src/lib/menu.sh:248
+msgid "classic"
+msgstr "클래식"
+
+#: src/lib/menu.sh:249
+msgid "GFX"
+msgstr "GFX"
+
+#: src/lib/menu.sh:250
+msgid "always"
+msgstr "항상"
+
+#: src/lib/menu.sh:252
+msgid "automatic"
+msgstr "자동"
+
+#: src/lib/menu.sh:261
+msgid ""
+"The apps only see the files on the server. Pick a folder to open and save "
+"files of this computer in them."
+msgstr ""
+"앱은 서버의 파일만 봅니다. 폴더를 고르면 이 컴퓨터의 파일을 열고 저장할 수 있"
+"습니다."
+
+#: src/lib/menu.sh:262
+msgid ""
+"The apps can open and save files in this folder. It shows up as a drive in "
+"them."
+msgstr ""
+"앱이 이 폴더의 파일을 열고 저장할 수 있습니다. 앱에서는 드라이브로 보입니다."
+
+#: src/lib/menu.sh:263
+msgid ""
+"Offers the apps under \"Open with\" for their file types, for example Word "
+"for .docx. The folder of the file is shared with the app while it is open."
+msgstr ""
+"파일 형식에 맞게 \"연결 프로그램\"에 앱을 표시합니다(예: .docx는 Word). 파일"
+"이 열려 있는 동안 해당 폴더가 공유됩니다."
+
+#: src/lib/menu.sh:264
+msgid ""
+"How big the apps are drawn. Automatic follows the scale of your desktop, so "
+"they are sharp and the right size."
+msgstr ""
+"앱을 그리는 크기입니다. 자동은 데스크톱 배율을 따르므로 선명하고 알맞은 크기"
+"로 보입니다."
+
+#: src/lib/menu.sh:265
+msgid "Plays the sound of the apps here, for calls and videos."
+msgstr "앱의 소리를 이 컴퓨터에서 재생합니다. 통화와 동영상에 필요합니다."
+
+#: src/lib/menu.sh:266
+msgid ""
+"Paints every window right. But some servers end the session right after "
+"signing in, then go back to GFX."
+msgstr "모든 창을 올바르게 그립니다. 하지만 로그인 직후 세션을 끊는 서버도 있으니 그때는 GFX로 돌아가세요."
+
+#: src/lib/menu.sh:267
+msgid ""
+"Works with every server. FreeRDP may not repaint a window after it was "
+"minimized or resized."
+msgstr "모든 서버에서 됩니다. 최소화하거나 크기를 바꾼 창을 FreeRDP가 다시 그리지 않을 수 있습니다."
+
+#: src/lib/menu.sh:268
+msgid ""
+"Always waits before the second sign-in. For when the second prompt does not "
+"come with automatic."
+msgstr ""
+"두 번째 로그인 전에 항상 기다립니다. 자동일 때 두 번째 요청이 오지 않으면 쓰"
+"세요."
+
+#: src/lib/menu.sh:269
+msgid "Never waits. Right when your company has no MFA."
+msgstr "기다리지 않습니다. 회사에서 MFA를 쓰지 않을 때 알맞습니다."
+
+#: src/lib/menu.sh:270
+msgid ""
+"Many servers with MFA need a second sign-in, and its prompt only comes after "
+"a short wait. Automatic waits when the first sign-in took a while."
+msgstr ""
+"MFA를 쓰는 많은 서버는 두 번째 로그인이 필요하고, 그 요청은 잠시 기다린 뒤에"
+"야 옵니다. 자동은 첫 로그인이 오래 걸렸을 때 기다립니다."
+
+#: src/lib/menu.sh:273
+msgid ""
+"Loads the list of apps again once a day, so new apps show up by themselves."
+msgstr "하루에 한 번 앱 목록을 다시 불러오므로 새 앱이 저절로 나타납니다."
+
+#: src/lib/menu.sh:275 src/lib/menu.sh:330
+msgid "Needs a systemd user session."
+msgstr "systemd 사용자 세션이 필요합니다."
+
+#: src/lib/menu.sh:322 src/lib/menu.sh:325
+msgid "Could not save the setting."
+msgstr "설정을 저장하지 못했습니다."
+
+#: src/lib/menu.sh:371 src/lib/menu.sh:609
+msgid "Settings"
+msgstr "설정"
+
+#: src/lib/menu.sh:372
+msgid "↑↓ select   ←→ or Space: change   q: back"
+msgstr "↑↓ 선택   ←→ 또는 스페이스: 변경   q: 뒤로"
+
+#: src/lib/menu.sh:373
+msgid "ON"
+msgstr "켜짐"
+
+#: src/lib/menu.sh:374
+msgid "OFF"
+msgstr "꺼짐"
+
+#: src/lib/menu.sh:456 src/lib/menu.sh:608
+msgid "Workspaces"
+msgstr "작업 공간"
+
+#. TRANSLATORS: keep the letters, they are the keys.
+#: src/lib/menu.sh:458
+msgid ""
+"↑↓ select   r: refresh   s: sign in again   d: remove   a: add   q: back"
+msgstr "↑↓ 선택   r: 새로 고침   s: 다시 로그인   d: 삭제   a: 추가   q: 뒤로"
+
+#: src/lib/menu.sh:459
+msgid "No workspace yet. Press a to add one."
+msgstr "아직 작업 공간이 없습니다. a를 눌러 추가하세요."
+
+#: src/lib/menu.sh:484
+#, sh-printf-format
+msgid "refreshed %s"
+msgstr "%s 새로 고침"
+
+#: src/lib/menu.sh:512
+#, sh-printf-format
+msgid "Remove \"%s\" and its apps?"
+msgstr "\"%s\"와(과) 해당 앱을 삭제할까요?"
+
+#: src/lib/menu.sh:536 src/lib/menu.sh:607
+msgid "Start an app"
+msgstr "앱 시작"
+
+#: src/lib/menu.sh:537
+msgid "↑↓ select   Enter: start   q: back"
+msgstr "↑↓ 선택   Enter: 시작   q: 뒤로"
+
+#: src/lib/menu.sh:538
+msgid "No apps yet. Add a workspace first."
+msgstr "아직 앱이 없습니다. 먼저 작업 공간을 추가하세요."
+
+#: src/lib/menu.sh:579
+#, sh-printf-format
+msgid "%s is starting. It opens in a window of its own."
+msgstr "%s을(를) 시작하는 중입니다. 별도 창으로 열립니다."
+
+#: src/lib/menu.sh:606
+msgid "Add a workspace"
+msgstr "작업 공간 추가"
+
+#: src/lib/menu.sh:610
+msgid "Quit"
+msgstr "끝내기"
+
+#: src/lib/workspace.sh:163
+msgid "The server did not accept the user name or password."
+msgstr "서버가 사용자 이름이나 비밀번호를 받아들이지 않았습니다."
+
+#: src/lib/workspace.sh:164
+#, sh-printf-format
+msgid "Could not reach the server: %s"
+msgstr "서버에 연결하지 못했습니다: %s"
+
+#: src/lib/workspace.sh:165
+#, sh-printf-format
+msgid "There is no RD Web feed at %s."
+msgstr "%s에 RD Web 피드가 없습니다."
+
+#: src/lib/workspace.sh:166
+#, sh-printf-format
+msgid "Could not load the apps: %s"
+msgstr "앱을 불러오지 못했습니다: %s"
+
+#: src/lib/workspace.sh:282
+#, sh-printf-format
+msgid "Remote desktop of %s"
+msgstr "%s 원격 데스크톱"
+
+#: src/lib/workspace.sh:284
+#, sh-printf-format
+msgid "%s from %s"
+msgstr "%s (%s)"
+
+#: src/lib/menu.sh
+msgid "Apps"
+msgstr "앱"
+
+#: src/lib/menu.sh
+msgid "Share a folder"
+msgstr "폴더 공유"
+
+#: src/lib/menu.sh
+msgid "Open files with the apps"
+msgstr "앱으로 파일 열기"
+
+#: src/lib/menu.sh
+msgid "Size"
+msgstr "크기"
+
+#: src/lib/menu.sh
+msgid "Sound"
+msgstr "소리"
+
+#: src/lib/menu.sh
+msgid "Graphics"
+msgstr "그래픽"
+
+#: src/lib/menu.sh
+msgid "Signing in"
+msgstr "로그인"
+
+#: src/lib/menu.sh
+msgid "Wait for the second MFA prompt"
+msgstr "두 번째 MFA 요청 기다리기"
+
+#: src/lib/menu.sh
+msgid "Refresh the apps every day"
+msgstr "매일 앱 새로 고침"

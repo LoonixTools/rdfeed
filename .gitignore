@@ -1,0 +1,8 @@
+# build artifacts
+build/
+po/*.mo
+doc/*.1
+__pycache__/
+
+# packages
+dist/

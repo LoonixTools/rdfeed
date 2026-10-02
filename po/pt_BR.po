@@ -1,0 +1,561 @@
+# Brazilian Portuguese translation for rdfeed.
+# Copyright (C) 2026 Felitendo
+# This file is distributed under the same license as rdfeed.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: rdfeed 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/LoonixTools/rdfeed/issues\n"
+"POT-Creation-Date: 2026-10-02 10:29+0200\n"
+"PO-Revision-Date: 2026-10-02 09:30+0200\n"
+"Last-Translator: Felitendo\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/rdfeed:79 src/rdfeed:103
+#, sh-printf-format
+msgid "Could not write to %s."
+msgstr "Não foi possível gravar em %s."
+
+#: src/rdfeed:82
+#, sh-printf-format
+msgid "Signing in to %s…"
+msgstr "Entrando em %s…"
+
+#: src/rdfeed:100
+msgid ""
+"The password could not be saved in the keyring, so each app asks for it."
+msgstr ""
+"Não foi possível salvar a senha no chaveiro, então cada app vai pedi-la."
+
+#: src/rdfeed:111
+#, sh-printf-format
+msgid "1 app from %s is now in your app menu."
+msgstr "1 app de %s agora está no seu menu de aplicativos."
+
+#: src/rdfeed:113
+#, sh-printf-format
+msgid "%d apps from %s are now in your app menu."
+msgstr "%d apps de %s agora estão no seu menu de aplicativos."
+
+#: src/rdfeed:129
+msgid ""
+"Your IT department has the address. A work e-mail address often works too."
+msgstr ""
+"O seu departamento de TI tem o endereço. Muitas vezes o e-mail do trabalho "
+"também funciona."
+
+#: src/rdfeed:130
+msgid "Feed address, server or e-mail:"
+msgstr "Endereço do feed, servidor ou e-mail:"
+
+#: src/rdfeed:137
+#, sh-printf-format
+msgid "No feed is registered for %s. Ask your IT department for the address."
+msgstr ""
+"Nenhum feed está registrado para %s. Peça o endereço ao seu departamento de "
+"TI."
+
+#: src/rdfeed:142 src/rdfeed:156
+msgid "User name (DOMAIN\\name or name@domain):"
+msgstr "Nome de usuário (DOMÍNIO\\nome ou nome@domínio):"
+
+#: src/rdfeed:146 src/rdfeed:159
+msgid "Password:"
+msgstr "Senha:"
+
+#: src/rdfeed:178 src/rdfeed:236
+#, sh-printf-format
+msgid "No workspace yet. Add one with `%s add`."
+msgstr "Ainda não há espaço de trabalho. Adicione um com `%s add`."
+
+#: src/rdfeed:187 src/lib/launch.sh:220
+#, sh-printf-format
+msgid "No password saved for %s. Sign in again in rdfeed."
+msgstr "Nenhuma senha salva para %s. Entre de novo no rdfeed."
+
+#: src/rdfeed:191 src/lib/launch.sh:149
+#, sh-printf-format
+msgid "Password for %s:"
+msgstr "Senha de %s:"
+
+#: src/rdfeed:195
+#, sh-printf-format
+msgid "Refreshing %s…"
+msgstr "Atualizando %s…"
+
+#: src/rdfeed:205
+msgid "The password no longer works. Sign in again in rdfeed."
+msgstr "A senha não funciona mais. Entre de novo no rdfeed."
+
+#: src/rdfeed:214
+#, sh-printf-format
+msgid "%s: %d apps"
+msgstr "%s: %d apps"
+
+#: src/rdfeed:222
+#, sh-printf-format
+msgid "Which workspace? See `%s list` for the names."
+msgstr "Qual espaço de trabalho? Os nomes estão em `%s list`."
+
+#: src/rdfeed:229
+#, sh-printf-format
+msgid "%s and its apps are removed."
+msgstr "%s e os seus apps foram removidos."
+
+#: src/rdfeed:253
+#, sh-printf-format
+msgid "Which app? See `%s list`."
+msgstr "Qual app? Veja `%s list`."
+
+#: src/rdfeed:268 src/lib/launch.sh:199
+#, sh-printf-format
+msgid "There is no app %s. See `%s list`."
+msgstr "Não existe o app %s. Veja `%s list`."
+
+#: src/rdfeed:270
+#, sh-printf-format
+msgid "Several workspaces have %s. Write it as WORKSPACE/APP, see `%s list`."
+msgstr ""
+"Vários espaços de trabalho têm %s. Escreva como ESPAÇO/APP, veja `%s list`."
+
+#: src/rdfeed:278
+msgid "Usage: rdfeed [command]"
+msgstr "Uso: rdfeed [comando]"
+
+#: src/rdfeed:280
+msgid "Commands:"
+msgstr "Comandos:"
+
+#: src/rdfeed:281
+msgid "Add the workspace of your company"
+msgstr "Adicionar o espaço de trabalho da sua empresa"
+
+#: src/rdfeed:282
+msgid "Load the apps again"
+msgstr "Carregar os apps de novo"
+
+#: src/rdfeed:283
+msgid "List the workspaces and their apps"
+msgstr "Listar os espaços de trabalho e seus apps"
+
+#: src/rdfeed:284
+msgid "Start an app, or open a file with it"
+msgstr "Abrir um app, ou um arquivo com ele"
+
+#: src/rdfeed:285
+msgid "Remove a workspace and its apps"
+msgstr "Remover um espaço de trabalho e seus apps"
+
+#: src/rdfeed:286
+msgid "Show this help"
+msgstr "Mostrar esta ajuda"
+
+#: src/rdfeed:287
+msgid "Show the version"
+msgstr "Mostrar a versão"
+
+#: src/rdfeed:289
+msgid "Without a command an interactive menu is shown."
+msgstr "Sem comando, um menu interativo é exibido."
+
+#: src/rdfeed:313
+#, sh-printf-format
+msgid "Unknown command: %s"
+msgstr "Comando desconhecido: %s"
+
+#: src/lib/common.sh:174 src/lib/menu.sh:251
+msgid "never"
+msgstr "nunca"
+
+#: src/lib/common.sh:184
+msgid "just now"
+msgstr "agora mesmo"
+
+#: src/lib/common.sh:186
+msgid "1 minute ago"
+msgstr "há 1 minuto"
+
+#: src/lib/common.sh:189
+#, sh-printf-format
+msgid "%d minutes ago"
+msgstr "há %d minutos"
+
+#: src/lib/common.sh:191
+msgid "1 hour ago"
+msgstr "há 1 hora"
+
+#: src/lib/common.sh:194
+#, sh-printf-format
+msgid "%d hours ago"
+msgstr "há %d horas"
+
+#: src/lib/common.sh:196
+msgid "1 day ago"
+msgstr "há 1 dia"
+
+#: src/lib/common.sh:199
+#, sh-printf-format
+msgid "%d days ago"
+msgstr "há %d dias"
+
+#: src/lib/launch.sh:169
+msgid ""
+"Your password has expired. Change it on Windows or on the RD Web page, then "
+"sign in again in rdfeed."
+msgstr ""
+"A sua senha expirou. Mude-a no Windows ou na página do RD Web e depois entre "
+"de novo no rdfeed."
+
+#: src/lib/launch.sh:171
+msgid "Your account is locked. Ask your IT department."
+msgstr "A sua conta está bloqueada. Fale com o seu departamento de TI."
+
+#: src/lib/launch.sh:173
+msgid "The server did not accept the password. Sign in again in rdfeed."
+msgstr "O servidor não aceitou a senha. Entre de novo no rdfeed."
+
+#: src/lib/launch.sh:175
+msgid "Could not reach the server. Check the internet connection."
+msgstr ""
+"Não foi possível alcançar o servidor. Verifique a conexão com a internet."
+
+#: src/lib/launch.sh:178
+#, sh-printf-format
+msgid "FreeRDP stopped: %s"
+msgstr "O FreeRDP parou: %s"
+
+#: src/lib/launch.sh:205 src/lib/launch.sh:206
+#, sh-printf-format
+msgid "File not found: %s"
+msgstr "Arquivo não encontrado: %s"
+
+#: src/lib/launch.sh:212 src/lib/launch.sh:213
+msgid ""
+"FreeRDP 3 is missing. Install it to start the apps (the package is called "
+"freerdp)."
+msgstr ""
+"O FreeRDP 3 não está instalado. Instale-o para abrir os apps (o pacote se "
+"chama freerdp)."
+
+#: src/lib/launch.sh:277
+#, sh-printf-format
+msgid "Opening %s in %s"
+msgstr "Abrindo %s no %s"
+
+#: src/lib/launch.sh:278
+#, sh-printf-format
+msgid "If it does not open by itself, open it in the app from the drive %s."
+msgstr "Se não abrir sozinho, abra-o no app pela unidade %s."
+
+#: src/lib/launch.sh:280
+#, sh-printf-format
+msgid "Starting %s"
+msgstr "Abrindo %s"
+
+#: src/lib/launch.sh:281
+msgid ""
+"If your company uses MFA, confirm the sign-in in your authenticator app."
+msgstr "Se a sua empresa usa MFA, confirme a entrada no seu app autenticador."
+
+#: src/lib/launch.sh:290
+msgid "A second sign-in is coming"
+msgstr "Vem uma segunda entrada"
+
+#: src/lib/launch.sh:291
+#, sh-printf-format
+msgid ""
+"Confirm the second prompt in your authenticator app too. It comes in about "
+"%d seconds."
+msgstr ""
+"Confirme também o segundo pedido no seu app autenticador. Ele chega em cerca "
+"de %d segundos."
+
+#: src/lib/launch.sh:301
+#, sh-printf-format
+msgid "%s could not start"
+msgstr "Não foi possível abrir %s"
+
+#: src/lib/launch.sh:303
+#, sh-printf-format
+msgid "Log: %s"
+msgstr "Log: %s"
+
+#. TRANSLATORS: the letter after "[" is the key for yes. y works too.
+#: src/lib/menu.sh:93
+msgid "[y/N]"
+msgstr "[s/N]"
+
+#: src/lib/menu.sh:163
+msgid "1 app"
+msgstr "1 app"
+
+#: src/lib/menu.sh:165
+#, sh-printf-format
+msgid "%d apps"
+msgstr "%d apps"
+
+#: src/lib/menu.sh:190
+msgid "No workspace yet. Add the one of your company with [1]."
+msgstr "Ainda não há espaço de trabalho. Adicione o da sua empresa com [1]."
+
+#: src/lib/menu.sh:233
+msgid "off"
+msgstr "desativado"
+
+#: src/lib/menu.sh:234
+msgid "home folder"
+msgstr "pasta pessoal"
+
+#: src/lib/menu.sh:237
+msgid "Documents"
+msgstr "Documentos"
+
+#: src/lib/menu.sh:238
+msgid "Downloads"
+msgstr "Downloads"
+
+#: src/lib/menu.sh:243
+msgid "not found"
+msgstr "não encontrada"
+
+#: src/lib/menu.sh:246
+#, sh-printf-format
+msgid "automatic (%d %%)"
+msgstr "automático (%d %%)"
+
+#: src/lib/menu.sh:248
+msgid "classic"
+msgstr "clássico"
+
+#: src/lib/menu.sh:249
+msgid "GFX"
+msgstr "GFX"
+
+#: src/lib/menu.sh:250
+msgid "always"
+msgstr "sempre"
+
+#: src/lib/menu.sh:252
+msgid "automatic"
+msgstr "automático"
+
+#: src/lib/menu.sh:261
+msgid ""
+"The apps only see the files on the server. Pick a folder to open and save "
+"files of this computer in them."
+msgstr ""
+"Os apps só veem os arquivos do servidor. Escolha uma pasta para que possam "
+"abrir e salvar arquivos deste computador."
+
+#: src/lib/menu.sh:262
+msgid ""
+"The apps can open and save files in this folder. It shows up as a drive in "
+"them."
+msgstr ""
+"Os apps podem abrir e salvar arquivos nesta pasta. Ela aparece neles como "
+"uma unidade."
+
+#: src/lib/menu.sh:263
+msgid ""
+"Offers the apps under \"Open with\" for their file types, for example Word "
+"for .docx. The folder of the file is shared with the app while it is open."
+msgstr ""
+"Oferece os apps em \"Abrir com\" para seus tipos de arquivo, por exemplo o "
+"Word para .docx. A pasta do arquivo fica compartilhada enquanto ele está "
+"aberto."
+
+#: src/lib/menu.sh:264
+msgid ""
+"How big the apps are drawn. Automatic follows the scale of your desktop, so "
+"they are sharp and the right size."
+msgstr ""
+"O tamanho em que os apps são desenhados. Automático segue a escala da sua "
+"área de trabalho, assim ficam nítidos e do tamanho certo."
+
+#: src/lib/menu.sh:265
+msgid "Plays the sound of the apps here, for calls and videos."
+msgstr "Toca aqui o som dos apps, para chamadas e vídeos."
+
+#: src/lib/menu.sh:266
+msgid ""
+"Paints every window right. But some servers end the session right after "
+"signing in, then go back to GFX."
+msgstr "Desenha cada janela direito. Mas alguns servidores encerram a sessão logo após a entrada; nesse caso, volte ao GFX."
+
+#: src/lib/menu.sh:267
+msgid ""
+"Works with every server. FreeRDP may not repaint a window after it was "
+"minimized or resized."
+msgstr "Funciona com qualquer servidor. O FreeRDP pode não redesenhar uma janela depois de minimizada ou redimensionada."
+
+#: src/lib/menu.sh:268
+msgid ""
+"Always waits before the second sign-in. For when the second prompt does not "
+"come with automatic."
+msgstr ""
+"Sempre espera antes da segunda entrada. Para quando, no automático, o "
+"segundo pedido não chega."
+
+#: src/lib/menu.sh:269
+msgid "Never waits. Right when your company has no MFA."
+msgstr "Nunca espera. Certo quando a sua empresa não usa MFA."
+
+#: src/lib/menu.sh:270
+msgid ""
+"Many servers with MFA need a second sign-in, and its prompt only comes after "
+"a short wait. Automatic waits when the first sign-in took a while."
+msgstr ""
+"Muitos servidores com MFA pedem uma segunda entrada, e o pedido só chega "
+"depois de uma breve espera. Automático espera quando a primeira entrada "
+"demorou."
+
+#: src/lib/menu.sh:273
+msgid ""
+"Loads the list of apps again once a day, so new apps show up by themselves."
+msgstr ""
+"Carrega a lista de apps de novo uma vez por dia, assim os novos aparecem "
+"sozinhos."
+
+#: src/lib/menu.sh:275 src/lib/menu.sh:330
+msgid "Needs a systemd user session."
+msgstr "Precisa de uma sessão de usuário do systemd."
+
+#: src/lib/menu.sh:322 src/lib/menu.sh:325
+msgid "Could not save the setting."
+msgstr "Não foi possível salvar a configuração."
+
+#: src/lib/menu.sh:371 src/lib/menu.sh:609
+msgid "Settings"
+msgstr "Configurações"
+
+#: src/lib/menu.sh:372
+msgid "↑↓ select   ←→ or Space: change   q: back"
+msgstr "↑↓ escolher   ←→ ou Espaço: mudar   q: voltar"
+
+#: src/lib/menu.sh:373
+msgid "ON"
+msgstr "ATIVADO"
+
+#: src/lib/menu.sh:374
+msgid "OFF"
+msgstr "DESATIVADO"
+
+#: src/lib/menu.sh:456 src/lib/menu.sh:608
+msgid "Workspaces"
+msgstr "Espaços de trabalho"
+
+#. TRANSLATORS: keep the letters, they are the keys.
+#: src/lib/menu.sh:458
+msgid ""
+"↑↓ select   r: refresh   s: sign in again   d: remove   a: add   q: back"
+msgstr ""
+"↑↓ escolher   r: atualizar   s: entrar de novo   d: remover   a: adicionar   "
+"q: voltar"
+
+#: src/lib/menu.sh:459
+msgid "No workspace yet. Press a to add one."
+msgstr "Ainda não há espaço de trabalho. Aperte a para adicionar um."
+
+#: src/lib/menu.sh:484
+#, sh-printf-format
+msgid "refreshed %s"
+msgstr "atualizado %s"
+
+#: src/lib/menu.sh:512
+#, sh-printf-format
+msgid "Remove \"%s\" and its apps?"
+msgstr "Remover \"%s\" e seus apps?"
+
+#: src/lib/menu.sh:536 src/lib/menu.sh:607
+msgid "Start an app"
+msgstr "Abrir um app"
+
+#: src/lib/menu.sh:537
+msgid "↑↓ select   Enter: start   q: back"
+msgstr "↑↓ escolher   Enter: abrir   q: voltar"
+
+#: src/lib/menu.sh:538
+msgid "No apps yet. Add a workspace first."
+msgstr "Ainda não há apps. Adicione primeiro um espaço de trabalho."
+
+#: src/lib/menu.sh:579
+#, sh-printf-format
+msgid "%s is starting. It opens in a window of its own."
+msgstr "%s está abrindo. Ele abre numa janela própria."
+
+#: src/lib/menu.sh:606
+msgid "Add a workspace"
+msgstr "Adicionar um espaço de trabalho"
+
+#: src/lib/menu.sh:610
+msgid "Quit"
+msgstr "Sair"
+
+#: src/lib/workspace.sh:163
+msgid "The server did not accept the user name or password."
+msgstr "O servidor não aceitou o nome de usuário ou a senha."
+
+#: src/lib/workspace.sh:164
+#, sh-printf-format
+msgid "Could not reach the server: %s"
+msgstr "Não foi possível alcançar o servidor: %s"
+
+#: src/lib/workspace.sh:165
+#, sh-printf-format
+msgid "There is no RD Web feed at %s."
+msgstr "Não há feed do RD Web em %s."
+
+#: src/lib/workspace.sh:166
+#, sh-printf-format
+msgid "Could not load the apps: %s"
+msgstr "Não foi possível carregar os apps: %s"
+
+#: src/lib/workspace.sh:282
+#, sh-printf-format
+msgid "Remote desktop of %s"
+msgstr "Área de trabalho remota de %s"
+
+#: src/lib/workspace.sh:284
+#, sh-printf-format
+msgid "%s from %s"
+msgstr "%s de %s"
+
+#: src/lib/menu.sh
+msgid "Apps"
+msgstr "Apps"
+
+#: src/lib/menu.sh
+msgid "Share a folder"
+msgstr "Compartilhar uma pasta"
+
+#: src/lib/menu.sh
+msgid "Open files with the apps"
+msgstr "Abrir arquivos com os apps"
+
+#: src/lib/menu.sh
+msgid "Size"
+msgstr "Tamanho"
+
+#: src/lib/menu.sh
+msgid "Sound"
+msgstr "Som"
+
+#: src/lib/menu.sh
+msgid "Graphics"
+msgstr "Gráficos"
+
+#: src/lib/menu.sh
+msgid "Signing in"
+msgstr "Acesso"
+
+#: src/lib/menu.sh
+msgid "Wait for the second MFA prompt"
+msgstr "Esperar o segundo pedido de MFA"
+
+#: src/lib/menu.sh
+msgid "Refresh the apps every day"
+msgstr "Atualizar os apps todo dia"

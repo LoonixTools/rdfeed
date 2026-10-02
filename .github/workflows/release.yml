@@ -1,0 +1,42 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Test and release
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Install the tools
+        run: |
+          pacman -Syu --noconfirm --needed git base-devel python freerdp shared-mime-info \
+            gettext scdoc github-cli
+
+      - uses: actions/checkout@v7
+        with:
+          # All tags, for the link to the changes since the last release.
+          fetch-depth: 0
+
+      - name: Check the tag against the Makefile
+        run: .github/check-version.sh "${{ github.ref_name }}"
+
+      - name: Check CHANGELOG.md has this release
+        run: .github/release-notes.sh --title "${{ github.ref_name }}"
+
+      - run: make test
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config --global --add safe.directory "$PWD"
+          .github/release-notes.sh "${{ github.ref_name }}" > notes.md
+          gh release create "${{ github.ref_name }}" \
+            --title "$(.github/release-notes.sh --title "${{ github.ref_name }}")" \
+            --notes-file notes.md

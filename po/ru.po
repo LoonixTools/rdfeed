@@ -1,0 +1,558 @@
+# Russian translation for rdfeed.
+# Copyright (C) 2026 Felitendo
+# This file is distributed under the same license as rdfeed.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: rdfeed 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/LoonixTools/rdfeed/issues\n"
+"POT-Creation-Date: 2026-10-02 10:29+0200\n"
+"PO-Revision-Date: 2026-10-02 09:30+0200\n"
+"Last-Translator: Felitendo\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/rdfeed:79 src/rdfeed:103
+#, sh-printf-format
+msgid "Could not write to %s."
+msgstr "Не удалось записать в %s."
+
+#: src/rdfeed:82
+#, sh-printf-format
+msgid "Signing in to %s…"
+msgstr "Вход на %s…"
+
+#: src/rdfeed:100
+msgid ""
+"The password could not be saved in the keyring, so each app asks for it."
+msgstr ""
+"Не удалось сохранить пароль в связке ключей, поэтому каждое приложение будет "
+"его запрашивать."
+
+#: src/rdfeed:111
+#, sh-printf-format
+msgid "1 app from %s is now in your app menu."
+msgstr "1 приложение из %s теперь в меню приложений."
+
+#: src/rdfeed:113
+#, sh-printf-format
+msgid "%d apps from %s are now in your app menu."
+msgstr "Приложений: %d (из %s). Теперь они в меню приложений."
+
+#: src/rdfeed:129
+msgid ""
+"Your IT department has the address. A work e-mail address often works too."
+msgstr ""
+"Адрес есть у вашего ИТ-отдела. Часто подходит и рабочий адрес электронной "
+"почты."
+
+#: src/rdfeed:130
+msgid "Feed address, server or e-mail:"
+msgstr "Адрес фида, сервер или e-mail:"
+
+#: src/rdfeed:137
+#, sh-printf-format
+msgid "No feed is registered for %s. Ask your IT department for the address."
+msgstr "Для %s не зарегистрирован фид. Спросите адрес у ИТ-отдела."
+
+#: src/rdfeed:142 src/rdfeed:156
+msgid "User name (DOMAIN\\name or name@domain):"
+msgstr "Имя пользователя (ДОМЕН\\имя или имя@домен):"
+
+#: src/rdfeed:146 src/rdfeed:159
+msgid "Password:"
+msgstr "Пароль:"
+
+#: src/rdfeed:178 src/rdfeed:236
+#, sh-printf-format
+msgid "No workspace yet. Add one with `%s add`."
+msgstr "Рабочих областей пока нет. Добавьте её командой `%s add`."
+
+#: src/rdfeed:187 src/lib/launch.sh:220
+#, sh-printf-format
+msgid "No password saved for %s. Sign in again in rdfeed."
+msgstr "Для %s не сохранён пароль. Войдите снова в rdfeed."
+
+#: src/rdfeed:191 src/lib/launch.sh:149
+#, sh-printf-format
+msgid "Password for %s:"
+msgstr "Пароль для %s:"
+
+#: src/rdfeed:195
+#, sh-printf-format
+msgid "Refreshing %s…"
+msgstr "Обновление %s…"
+
+#: src/rdfeed:205
+msgid "The password no longer works. Sign in again in rdfeed."
+msgstr "Пароль больше не подходит. Войдите снова в rdfeed."
+
+#: src/rdfeed:214
+#, sh-printf-format
+msgid "%s: %d apps"
+msgstr "%s: приложений: %d"
+
+#: src/rdfeed:222
+#, sh-printf-format
+msgid "Which workspace? See `%s list` for the names."
+msgstr "Какая рабочая область? Названия показывает `%s list`."
+
+#: src/rdfeed:229
+#, sh-printf-format
+msgid "%s and its apps are removed."
+msgstr "Удалено: %s вместе с приложениями."
+
+#: src/rdfeed:253
+#, sh-printf-format
+msgid "Which app? See `%s list`."
+msgstr "Какое приложение? Смотрите `%s list`."
+
+#: src/rdfeed:268 src/lib/launch.sh:199
+#, sh-printf-format
+msgid "There is no app %s. See `%s list`."
+msgstr "Приложения %s нет. Смотрите `%s list`."
+
+#: src/rdfeed:270
+#, sh-printf-format
+msgid "Several workspaces have %s. Write it as WORKSPACE/APP, see `%s list`."
+msgstr ""
+"%s есть в нескольких рабочих областях. Укажите в виде ОБЛАСТЬ/ПРИЛОЖЕНИЕ, "
+"смотрите `%s list`."
+
+#: src/rdfeed:278
+msgid "Usage: rdfeed [command]"
+msgstr "Использование: rdfeed [команда]"
+
+#: src/rdfeed:280
+msgid "Commands:"
+msgstr "Команды:"
+
+#: src/rdfeed:281
+msgid "Add the workspace of your company"
+msgstr "Добавить рабочую область вашей компании"
+
+#: src/rdfeed:282
+msgid "Load the apps again"
+msgstr "Загрузить приложения заново"
+
+#: src/rdfeed:283
+msgid "List the workspaces and their apps"
+msgstr "Показать рабочие области и их приложения"
+
+#: src/rdfeed:284
+msgid "Start an app, or open a file with it"
+msgstr "Запустить приложение или открыть в нём файл"
+
+#: src/rdfeed:285
+msgid "Remove a workspace and its apps"
+msgstr "Удалить рабочую область и её приложения"
+
+#: src/rdfeed:286
+msgid "Show this help"
+msgstr "Показать эту справку"
+
+#: src/rdfeed:287
+msgid "Show the version"
+msgstr "Показать версию"
+
+#: src/rdfeed:289
+msgid "Without a command an interactive menu is shown."
+msgstr "Без команды открывается интерактивное меню."
+
+#: src/rdfeed:313
+#, sh-printf-format
+msgid "Unknown command: %s"
+msgstr "Неизвестная команда: %s"
+
+#: src/lib/common.sh:174 src/lib/menu.sh:251
+msgid "never"
+msgstr "никогда"
+
+#: src/lib/common.sh:184
+msgid "just now"
+msgstr "только что"
+
+#: src/lib/common.sh:186
+msgid "1 minute ago"
+msgstr "1 минуту назад"
+
+#: src/lib/common.sh:189
+#, sh-printf-format
+msgid "%d minutes ago"
+msgstr "%d мин назад"
+
+#: src/lib/common.sh:191
+msgid "1 hour ago"
+msgstr "1 час назад"
+
+#: src/lib/common.sh:194
+#, sh-printf-format
+msgid "%d hours ago"
+msgstr "%d ч назад"
+
+#: src/lib/common.sh:196
+msgid "1 day ago"
+msgstr "1 день назад"
+
+#: src/lib/common.sh:199
+#, sh-printf-format
+msgid "%d days ago"
+msgstr "%d дн. назад"
+
+#: src/lib/launch.sh:169
+msgid ""
+"Your password has expired. Change it on Windows or on the RD Web page, then "
+"sign in again in rdfeed."
+msgstr ""
+"Срок действия пароля истёк. Смените его в Windows или на странице RD Web, "
+"затем снова войдите в rdfeed."
+
+#: src/lib/launch.sh:171
+msgid "Your account is locked. Ask your IT department."
+msgstr "Учётная запись заблокирована. Обратитесь в ИТ-отдел."
+
+#: src/lib/launch.sh:173
+msgid "The server did not accept the password. Sign in again in rdfeed."
+msgstr "Сервер не принял пароль. Войдите снова в rdfeed."
+
+#: src/lib/launch.sh:175
+msgid "Could not reach the server. Check the internet connection."
+msgstr "Не удалось связаться с сервером. Проверьте подключение к интернету."
+
+#: src/lib/launch.sh:178
+#, sh-printf-format
+msgid "FreeRDP stopped: %s"
+msgstr "FreeRDP остановился: %s"
+
+#: src/lib/launch.sh:205 src/lib/launch.sh:206
+#, sh-printf-format
+msgid "File not found: %s"
+msgstr "Файл не найден: %s"
+
+#: src/lib/launch.sh:212 src/lib/launch.sh:213
+msgid ""
+"FreeRDP 3 is missing. Install it to start the apps (the package is called "
+"freerdp)."
+msgstr ""
+"Нет FreeRDP 3. Установите его, чтобы запускать приложения (пакет называется "
+"freerdp)."
+
+#: src/lib/launch.sh:277
+#, sh-printf-format
+msgid "Opening %s in %s"
+msgstr "Открытие %s в %s"
+
+#: src/lib/launch.sh:278
+#, sh-printf-format
+msgid "If it does not open by itself, open it in the app from the drive %s."
+msgstr "Если файл не откроется сам, откройте его в приложении с диска %s."
+
+#: src/lib/launch.sh:280
+#, sh-printf-format
+msgid "Starting %s"
+msgstr "Запуск: %s"
+
+#: src/lib/launch.sh:281
+msgid ""
+"If your company uses MFA, confirm the sign-in in your authenticator app."
+msgstr ""
+"Если ваша компания использует MFA, подтвердите вход в приложении-"
+"аутентификаторе."
+
+#: src/lib/launch.sh:290
+msgid "A second sign-in is coming"
+msgstr "Будет второй вход"
+
+#: src/lib/launch.sh:291
+#, sh-printf-format
+msgid ""
+"Confirm the second prompt in your authenticator app too. It comes in about "
+"%d seconds."
+msgstr ""
+"Подтвердите и второй запрос в приложении-аутентификаторе. Он придёт примерно "
+"через %d с."
+
+#: src/lib/launch.sh:301
+#, sh-printf-format
+msgid "%s could not start"
+msgstr "Не удалось запустить: %s"
+
+#: src/lib/launch.sh:303
+#, sh-printf-format
+msgid "Log: %s"
+msgstr "Журнал: %s"
+
+#. TRANSLATORS: the letter after "[" is the key for yes. y works too.
+#: src/lib/menu.sh:93
+msgid "[y/N]"
+msgstr "[д/Н]"
+
+#: src/lib/menu.sh:163
+msgid "1 app"
+msgstr "1 приложение"
+
+#: src/lib/menu.sh:165
+#, sh-printf-format
+msgid "%d apps"
+msgstr "приложений: %d"
+
+#: src/lib/menu.sh:190
+msgid "No workspace yet. Add the one of your company with [1]."
+msgstr "Рабочих областей пока нет. Добавьте область вашей компании через [1]."
+
+#: src/lib/menu.sh:233
+msgid "off"
+msgstr "выкл."
+
+#: src/lib/menu.sh:234
+msgid "home folder"
+msgstr "домашняя папка"
+
+#: src/lib/menu.sh:237
+msgid "Documents"
+msgstr "Документы"
+
+#: src/lib/menu.sh:238
+msgid "Downloads"
+msgstr "Загрузки"
+
+#: src/lib/menu.sh:243
+msgid "not found"
+msgstr "не найдена"
+
+#: src/lib/menu.sh:246
+#, sh-printf-format
+msgid "automatic (%d %%)"
+msgstr "автоматически (%d %%)"
+
+#: src/lib/menu.sh:248
+msgid "classic"
+msgstr "классический"
+
+#: src/lib/menu.sh:249
+msgid "GFX"
+msgstr "GFX"
+
+#: src/lib/menu.sh:250
+msgid "always"
+msgstr "всегда"
+
+#: src/lib/menu.sh:252
+msgid "automatic"
+msgstr "автоматически"
+
+#: src/lib/menu.sh:261
+msgid ""
+"The apps only see the files on the server. Pick a folder to open and save "
+"files of this computer in them."
+msgstr ""
+"Приложения видят только файлы на сервере. Выберите папку, чтобы они могли "
+"открывать и сохранять файлы этого компьютера."
+
+#: src/lib/menu.sh:262
+msgid ""
+"The apps can open and save files in this folder. It shows up as a drive in "
+"them."
+msgstr ""
+"Приложения могут открывать и сохранять файлы в этой папке. В них она видна "
+"как диск."
+
+#: src/lib/menu.sh:263
+msgid ""
+"Offers the apps under \"Open with\" for their file types, for example Word "
+"for .docx. The folder of the file is shared with the app while it is open."
+msgstr ""
+"Предлагает приложения в «Открыть с помощью» для их типов файлов, например "
+"Word для .docx. Папка файла открыта для сервера, пока файл открыт."
+
+#: src/lib/menu.sh:264
+msgid ""
+"How big the apps are drawn. Automatic follows the scale of your desktop, so "
+"they are sharp and the right size."
+msgstr ""
+"Насколько крупно рисуются приложения. «Автоматически» следует масштабу "
+"рабочего стола, так они чёткие и нужного размера."
+
+#: src/lib/menu.sh:265
+msgid "Plays the sound of the apps here, for calls and videos."
+msgstr "Воспроизводит звук приложений здесь, для звонков и видео."
+
+#: src/lib/menu.sh:266
+msgid ""
+"Paints every window right. But some servers end the session right after "
+"signing in, then go back to GFX."
+msgstr "Правильно рисует каждое окно. Но некоторые серверы обрывают сеанс сразу после входа, тогда вернитесь к GFX."
+
+#: src/lib/menu.sh:267
+msgid ""
+"Works with every server. FreeRDP may not repaint a window after it was "
+"minimized or resized."
+msgstr "Работает с любым сервером. FreeRDP может не перерисовать окно после сворачивания или изменения размера."
+
+#: src/lib/menu.sh:268
+msgid ""
+"Always waits before the second sign-in. For when the second prompt does not "
+"come with automatic."
+msgstr ""
+"Всегда ждёт перед вторым входом. Если с «автоматически» второй запрос не "
+"приходит."
+
+#: src/lib/menu.sh:269
+msgid "Never waits. Right when your company has no MFA."
+msgstr "Никогда не ждёт. Подходит, если ваша компания не использует MFA."
+
+#: src/lib/menu.sh:270
+msgid ""
+"Many servers with MFA need a second sign-in, and its prompt only comes after "
+"a short wait. Automatic waits when the first sign-in took a while."
+msgstr ""
+"Многим серверам с MFA нужен второй вход, и его запрос приходит только после "
+"короткой паузы. «Автоматически» ждёт, если первый вход занял время."
+
+#: src/lib/menu.sh:273
+msgid ""
+"Loads the list of apps again once a day, so new apps show up by themselves."
+msgstr ""
+"Раз в день заново загружает список приложений, так новые появляются сами."
+
+#: src/lib/menu.sh:275 src/lib/menu.sh:330
+msgid "Needs a systemd user session."
+msgstr "Нужен пользовательский сеанс systemd."
+
+#: src/lib/menu.sh:322 src/lib/menu.sh:325
+msgid "Could not save the setting."
+msgstr "Не удалось сохранить настройку."
+
+#: src/lib/menu.sh:371 src/lib/menu.sh:609
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/lib/menu.sh:372
+msgid "↑↓ select   ←→ or Space: change   q: back"
+msgstr "↑↓ выбор   ←→ или Пробел: изменить   q: назад"
+
+#: src/lib/menu.sh:373
+msgid "ON"
+msgstr "ВКЛ"
+
+#: src/lib/menu.sh:374
+msgid "OFF"
+msgstr "ВЫКЛ"
+
+#: src/lib/menu.sh:456 src/lib/menu.sh:608
+msgid "Workspaces"
+msgstr "Рабочие области"
+
+#. TRANSLATORS: keep the letters, they are the keys.
+#: src/lib/menu.sh:458
+msgid ""
+"↑↓ select   r: refresh   s: sign in again   d: remove   a: add   q: back"
+msgstr ""
+"↑↓ выбор   r: обновить   s: войти снова   d: удалить   a: добавить   q: назад"
+
+#: src/lib/menu.sh:459
+msgid "No workspace yet. Press a to add one."
+msgstr "Рабочих областей пока нет. Нажмите a, чтобы добавить."
+
+#: src/lib/menu.sh:484
+#, sh-printf-format
+msgid "refreshed %s"
+msgstr "обновлено %s"
+
+#: src/lib/menu.sh:512
+#, sh-printf-format
+msgid "Remove \"%s\" and its apps?"
+msgstr "Удалить «%s» вместе с приложениями?"
+
+#: src/lib/menu.sh:536 src/lib/menu.sh:607
+msgid "Start an app"
+msgstr "Запустить приложение"
+
+#: src/lib/menu.sh:537
+msgid "↑↓ select   Enter: start   q: back"
+msgstr "↑↓ выбор   Enter: запустить   q: назад"
+
+#: src/lib/menu.sh:538
+msgid "No apps yet. Add a workspace first."
+msgstr "Приложений пока нет. Сначала добавьте рабочую область."
+
+#: src/lib/menu.sh:579
+#, sh-printf-format
+msgid "%s is starting. It opens in a window of its own."
+msgstr "Запуск: %s. Откроется в отдельном окне."
+
+#: src/lib/menu.sh:606
+msgid "Add a workspace"
+msgstr "Добавить рабочую область"
+
+#: src/lib/menu.sh:610
+msgid "Quit"
+msgstr "Выход"
+
+#: src/lib/workspace.sh:163
+msgid "The server did not accept the user name or password."
+msgstr "Сервер не принял имя пользователя или пароль."
+
+#: src/lib/workspace.sh:164
+#, sh-printf-format
+msgid "Could not reach the server: %s"
+msgstr "Не удалось связаться с сервером: %s"
+
+#: src/lib/workspace.sh:165
+#, sh-printf-format
+msgid "There is no RD Web feed at %s."
+msgstr "По адресу %s нет фида RD Web."
+
+#: src/lib/workspace.sh:166
+#, sh-printf-format
+msgid "Could not load the apps: %s"
+msgstr "Не удалось загрузить приложения: %s"
+
+#: src/lib/workspace.sh:282
+#, sh-printf-format
+msgid "Remote desktop of %s"
+msgstr "Удалённый рабочий стол %s"
+
+#: src/lib/workspace.sh:284
+#, sh-printf-format
+msgid "%s from %s"
+msgstr "%s из %s"
+
+#: src/lib/menu.sh
+msgid "Apps"
+msgstr "Приложения"
+
+#: src/lib/menu.sh
+msgid "Share a folder"
+msgstr "Общая папка"
+
+#: src/lib/menu.sh
+msgid "Open files with the apps"
+msgstr "Открывать файлы в приложениях"
+
+#: src/lib/menu.sh
+msgid "Size"
+msgstr "Размер"
+
+#: src/lib/menu.sh
+msgid "Sound"
+msgstr "Звук"
+
+#: src/lib/menu.sh
+msgid "Graphics"
+msgstr "Графика"
+
+#: src/lib/menu.sh
+msgid "Signing in"
+msgstr "Вход"
+
+#: src/lib/menu.sh
+msgid "Wait for the second MFA prompt"
+msgstr "Ждать второй запрос MFA"
+
+#: src/lib/menu.sh
+msgid "Refresh the apps every day"
+msgstr "Обновлять приложения каждый день"
